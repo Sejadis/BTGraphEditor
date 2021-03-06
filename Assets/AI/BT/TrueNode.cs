@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace AI.BT
 {
+    [Serializable]
     public class TrueNode : BTNode
     {
         // public override Type Type => typeof(TrueNode);

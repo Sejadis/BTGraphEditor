@@ -34,10 +34,5 @@ namespace AI.BT
         {
             throw new InvalidOperationException("RootNode can not have a parent");
         }
-        
-        // public override (Type, ) SetMapping()
-        // {
-        //     return(typeof(RootNode),() => return new RootNode());
-        // }
     }
 }

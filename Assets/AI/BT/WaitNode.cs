@@ -7,23 +7,26 @@ namespace AI.BT
     [Serializable]
     public class WaitNode : BTNode
     {
-        [Input]
-        public float waitTime;
-        [Output]
-        public Transform transform;
+        [Input] public float waitTime;
+        [Output] public int transform;
+
         private float startTime = -1;
         // public override Type Type => typeof(WaitNode);
 
-        
+        public WaitNode()
+        {
+        }
+
         public WaitNode(float waitTime)
         {
             if (waitTime == 0)
             {
                 throw new ArgumentException("waitTime can not be 0");
             }
+
             this.waitTime = waitTime;
         }
-    
+
         public override ResultState Execute()
         {
             var result = ResultState.Running;
@@ -36,7 +39,8 @@ namespace AI.BT
             {
                 result = ResultState.Success;
             }
-            Debug.Log("WaitNode: " +  result);
+
+            Debug.Log("WaitNode: " + result);
 
             return result;
         }

@@ -12,9 +12,9 @@ public class BTTester : MonoBehaviour
     [MenuItem("Graph/Run Tree %#e")]
     private static void RunTree()
     {
-        ClearLog();
-        var tree = AssetDatabase.LoadAssetAtPath<BehaviorTree>("Assets/bTree.asset");
-        tree.rootNode.Execute();
+        // ClearLog();
+        // var tree = AssetDatabase.LoadAssetAtPath<BehaviorTree>("Assets/bTree.asset");
+        // tree.rootNode.Execute();
     }
     
     
