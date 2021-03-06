@@ -26,12 +26,15 @@ namespace AI.BTGraph
             title = RuntimeNodeData.type.Name;
             outputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi,
                 typeof(BTNode.ResultState));
+            outputPort.portName = "OUT";
             outputContainer.Add(outputPort);
             inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input,
                 RuntimeNodeData.allowMultipleChildren ? Port.Capacity.Multi : Port.Capacity.Single,
                 typeof(BTNode.ResultState));
+            inputPort.portName = "IN";
+
             inputContainer.Add(inputPort);
-            
+
             CreatePorts(RuntimeNodeData.inputTypes, inputContainer, Direction.Input);
             CreatePorts(RuntimeNodeData.outputTypes, outputContainer, Direction.Output, Port.Capacity.Multi);
 
@@ -60,7 +63,11 @@ namespace AI.BTGraph
             RuntimeNodeData = new RuntimeNodeData(typeof(RootNode));
             var port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single,
                 typeof(BTNode.ResultState));
+            port.portName = "IN";
             inputContainer.Add(port);
+
+            RefreshPorts();
+            RefreshExpandedState();
         }
     }
 }
