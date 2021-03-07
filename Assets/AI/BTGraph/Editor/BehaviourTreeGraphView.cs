@@ -19,6 +19,9 @@ namespace AI.BTGraph.Editor
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new FreehandSelector());
 
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Styles/GraphEditor.uss");
+            styleSheets.Add(styleSheet);
+
             var node = CreateRootNode();
             RootNode = node;
             AddElement(node);
