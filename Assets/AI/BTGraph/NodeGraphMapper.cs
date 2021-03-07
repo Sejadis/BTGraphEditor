@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AI.BT;
 
-namespace Subtegral.DialogueSystem.Editor
+namespace AI.BTGraph
 {
     public static class NodeGraphMapper<T> where T: BTNode
     {

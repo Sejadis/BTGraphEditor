@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Subtegral.DialogueSystem.Editor;
 using UnityEngine;
 
 namespace AI.BT
@@ -14,14 +13,40 @@ namespace AI.BT
 
         public BTNode Parent => parent;
         public List<BTNode> Children => children;
-        public static bool AllowMultipleChildren => true;
+        public static bool AllowMultipleChildren => false;
 
+        public delegate void StateChanged(ResultState newState, BTNode source);
+
+        public event StateChanged OnStateChanged;
         public Guid Guid => guid;
 
         protected BTNode()
         {
             guid = Guid.NewGuid();
             children = new List<BTNode>();
+        }
+
+        private ResultState currentState;
+
+        public ResultState CurrentState
+        {
+            get => currentState;
+            set
+            {
+                var old = currentState;
+                currentState = value;
+                // Debug.Log($"{this.GetType().Name}: {currentState.ToString()}");
+                //TODO need a better way to check if changed
+                // if (old != currentState)
+                // {
+                OnStateChanged?.Invoke(currentState, this);
+                // }
+            }
+        }
+
+        public void ResetEvent()
+        {
+            // OnStateChanged = null;
         }
 
         public abstract ResultState Execute();
@@ -32,8 +57,8 @@ namespace AI.BT
             {
                 children = new List<BTNode>();
             }
-            
-            if (children.Count < 1 || AllowMultipleChildren)
+
+            if (children.Count < 1 || this is IMayHaveMultipleChildren)
             {
                 children.Add(child);
             }

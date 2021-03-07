@@ -1,16 +1,15 @@
 ﻿using System;
-using AI.BTGraph;
-using UnityEngine;
+using AI.BTGraph.Attribute;
 
-namespace AI.BT
+namespace AI.BT.Nodes
 {
     [Serializable]
     public class WaitNode : BTNode
     {
-        [Input] public float waitTime;
+        [Input] public float waitTime = 3;
         [Output] public int transform;
 
-        private float startTime = -1;
+        private DateTime startTime = DateTime.MinValue;
         // public override Type Type => typeof(WaitNode);
 
         public WaitNode()
@@ -29,20 +28,22 @@ namespace AI.BT
 
         public override ResultState Execute()
         {
-            var result = ResultState.Running;
-            if (startTime == -1)
+            CurrentState = ResultState.Running;
+            if (startTime == DateTime.MinValue)
             {
-                startTime = Time.time;
+                startTime = DateTime.Now;
             }
 
-            if (Time.time > startTime + waitTime)
+            if (DateTime.Now - startTime > new TimeSpan(0, 0, 3))
             {
-                result = ResultState.Success;
+                CurrentState = ResultState.Success;
+                //reset
+                startTime = DateTime.MinValue;
             }
 
-            Debug.Log("WaitNode: " + result);
+            // Debug.Log("WaitNode: " + CurrentState);
 
-            return result;
+            return CurrentState;
         }
     }
 }

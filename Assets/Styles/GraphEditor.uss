@@ -4,3 +4,32 @@
     --thick-line-color: #a5a5a5;
     --spacing: 50;
 }
+
+#contents{
+    /*justify-content: flex-end;*/
+}
+#node-border{
+    flex-grow: 1;
+}
+
+#collapsible-area{
+    flex-grow: 1;
+}
+
+#extension{
+    flex-grow: 1;
+}
+
+/*#node-border{*/
+/*    background-color: #00000000;*/
+/*}*/
+/*#node-border .Failure{*/
+/*    background-color: #ff0000ff;*/
+/*}*/
+
+/*#node-border .Success{*/
+/*    background-color: #30fc00ff;*/
+/*}*/
+/*.Running > #node-border{*/
+/*    background-color: #ece809ff;*/
+/*}*/

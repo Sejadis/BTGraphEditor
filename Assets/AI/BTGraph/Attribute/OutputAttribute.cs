@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace AI.BTGraph
+namespace AI.BTGraph.Attribute
 {
     [AttributeUsage(AttributeTargets.Field)]
 
-    public class OutputAttribute : Attribute
+    public class OutputAttribute : System.Attribute
     {
     }
 }

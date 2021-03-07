@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using AI.BT;
+using AI.BT.Nodes;
+using AI.BT.Nodes.Decorator;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -15,13 +18,41 @@ namespace AI.BTGraph.Editor
         private List<Type> NodeTypes = new List<Type>();
         private List<RuntimeNodeData> NodeData = new List<RuntimeNodeData>();
         private BehaviourTreeGraphView graphView;
+        private BehaviorTree selectedBehaviorTree;
+        private Dictionary<BTNode, BTGraphNode> nodeMap;
+
+        public BehaviorTree SelectedBehaviorTree
+        {
+            get => selectedBehaviorTree;
+            set
+            {
+                selectedBehaviorTree = value;
+                LoadGraph(selectedBehaviorTree);
+            }
+        }
 
         [MenuItem("Graph/Show")]
-        public static void ShowWindow()
+        public static GraphWindow ShowWindow()
         {
             var window = GetWindow<GraphWindow>();
             window.titleContent = new GUIContent("Behavior Graph");
             window.minSize = new Vector2(800, 600);
+            return window;
+        }
+
+        [OnOpenAsset(1)]
+        public static bool OpenBehaviourTree(int instanceID, int line)
+        {
+            var tree = EditorUtility.InstanceIDToObject(instanceID) as BehaviorTree;
+            if (tree == null)
+            {
+                //not a behavior tree
+                return false;
+            }
+
+            var window = ShowWindow();
+            window.SelectedBehaviorTree = tree;
+            return true;
         }
 
         private void OnEnable()
@@ -30,9 +61,9 @@ namespace AI.BTGraph.Editor
             {
                 name = "Behaviour Graph"
             };
+
             graphView.StretchToParentSize();
             rootVisualElement.Add(graphView);
-
             SetupGraphView();
             CreateTestNodes();
         }
@@ -47,25 +78,34 @@ namespace AI.BTGraph.Editor
             var map = CreateMiniMap();
             var grid = CreateGrid();
             var toolbar = CreateToolbar();
+            var blackboard = CreateBlackBoard();
             graphView.Add(map);
+            graphView.Add(blackboard);
             graphView.Insert(0, grid);
             rootVisualElement.Add(toolbar);
         }
 
-        private static MiniMap CreateMiniMap()
+        private Blackboard CreateBlackBoard()
+        {
+            var blackboard = new Blackboard(graphView);
+            blackboard.SetPosition(new Rect(10,30,150,300));
+            return blackboard;
+        }
+
+        private MiniMap CreateMiniMap()
         {
             var map = new MiniMap();
             var windowSize = position.size;
             var mapSize = new Vector2(150, 100);
+
             var mapPosition = new Vector2(
                 //base pos is upper right corner, offset by window size, offset by margin
                 windowSize.x - mapSize.x - 25,
                 25);
-            
+
             var mapRect = map.GetPosition();
             mapRect.size = mapSize;
             mapRect.position = mapPosition;
-            
             map.SetPosition(mapRect);
             map.anchored = true;
             map.OnResized();
@@ -83,7 +123,12 @@ namespace AI.BTGraph.Editor
         {
             var toolbar = new Toolbar();
 
-            var saveButton = new Button(() => SaveLoadHandler.Save(graphView))
+            var saveButton = new Button(() =>
+            {
+                
+                selectedBehaviorTree = SaveLoadHandler.Save(graphView);
+                LoadGraph(selectedBehaviorTree);
+            })
             {
                 text = "Save"
             };
@@ -92,15 +137,28 @@ namespace AI.BTGraph.Editor
             {
                 text = "Create TestNode"
             };
+            
+            var runTreeButton = new Button(RunTree)
+            {
+                text = "Run"
+            };
+
             var treePicker = new ObjectField()
             {
                 objectType = typeof(BehaviorTree)
             };
+
             treePicker.RegisterValueChangedCallback(OnTreeChanged);
             toolbar.Add(saveButton);
             toolbar.Add(testNodeButton);
             toolbar.Add(treePicker);
+            toolbar.Add(runTreeButton);
             return toolbar;
+        }
+
+        private void RunTree()
+        {
+            selectedBehaviorTree?.rootNode.Execute();
         }
 
         private void OnTreeChanged(ChangeEvent<Object> changeEvent)
@@ -110,12 +168,40 @@ namespace AI.BTGraph.Editor
             {
                 return;
             }
+
+            SelectedBehaviorTree = tree;
+        }
+
+        private void LoadGraph(BehaviorTree behaviorTree)
+        {
             graphView.ResetView();
-            SaveLoadHandler.LoadGraphFromTree(tree, graphView);
+            SaveLoadHandler.LoadGraphFromTree(behaviorTree, graphView, out nodeMap);
+            foreach (var node in nodeMap.Keys)
+            {
+                node.ResetEvent();
+                node.OnStateChanged += OnNodeStateChanged;
+            }
+        }
+
+        private void OnNodeStateChanged(ResultState newstate, BTNode source)
+        {
+            if (nodeMap.TryGetValue(source, out var graphNode))
+            {
+                graphNode.SetRuntimeState(newstate);
+            }
         }
 
         private void CreateTestNodes()
         {
+            return;
+            var node1 = new BTGraphNode(typeof(TrueNode));
+            var node2 = new BTGraphNode(typeof(WaitNode));
+            node1.extensionContainer.Add(node2);
+            node2.StretchToParentSize();
+            node1.capabilities |= Capabilities.Resizable;
+            node1.RefreshExpandedState();
+            graphView.AddElement(node1);
+            return;
             //test
             if (GetClassData())
             {

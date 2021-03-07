@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using AI.BT.Nodes;
+using AI.BT.Serialization;
 using UnityEngine;
 
 namespace AI.BT
@@ -10,13 +12,13 @@ namespace AI.BT
         [NonSerialized] public RootNode rootNode;
         [NonSerialized] public List<BTNode> nodes = new List<BTNode>();
         [NonSerialized] public Dictionary<Guid, Rect> nodePositions = new Dictionary<Guid, Rect>();
-        [SerializeField] private SerializedBehaviorTree _serializedBehaviorTree;
+        [SerializeField] private SerializedBehaviorTree serializedBehaviorTree;
 
         public void SetFromSerializedTree(SerializedBehaviorTree serializedBehaviorTree)
         {
             var nodeMap = new Dictionary<string, BTNode>();
             //populate nodes
-            foreach (var node in _serializedBehaviorTree.nodes)
+            foreach (var node in this.serializedBehaviorTree.nodes)
             {
                 var btNode = node.CreateBTNode();
                 nodes.Add(btNode);
@@ -25,7 +27,7 @@ namespace AI.BT
             }
 
             //all nodes created, make links
-            foreach (var node in _serializedBehaviorTree.nodes)
+            foreach (var node in this.serializedBehaviorTree.nodes)
             {
                 if (node.parent != string.Empty)
                 {
@@ -43,15 +45,17 @@ namespace AI.BT
 
         public void OnBeforeSerialize()
         {
-            _serializedBehaviorTree = new SerializedBehaviorTree(this);
+            serializedBehaviorTree = new SerializedBehaviorTree(this);
         }
 
         public void OnAfterDeserialize()
         {
-            SetFromSerializedTree(_serializedBehaviorTree);
+            nodePositions.Clear();
+            nodes.Clear();
+            SetFromSerializedTree(serializedBehaviorTree);
             //free memory
             //TODO necessary?
-            _serializedBehaviorTree = null;
+            serializedBehaviorTree = null;
         }
     }
 }

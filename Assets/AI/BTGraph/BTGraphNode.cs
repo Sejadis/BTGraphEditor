@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AI.BT;
+using AI.BT.Nodes;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,7 +11,7 @@ namespace AI.BTGraph
 {
     public class BTGraphNode : Node
     {
-        public Guid GUID;
+        public Guid Guid;
         public RuntimeNodeData RuntimeNodeData { get; }
         private Port inputPort;
         private Port outputPort;
@@ -21,23 +23,26 @@ namespace AI.BTGraph
         public BTGraphNode(Type type) : this(new RuntimeNodeData(type))
         {
         }
-        
+
         public BTGraphNode(RuntimeNodeData runtimeNodeData)
         {
             name = runtimeNodeData.type.Name;
             RuntimeNodeData = runtimeNodeData;
-            GUID = Guid.NewGuid();
+            Guid = Guid.NewGuid();
             title = RuntimeNodeData.type.Name;
             outputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi,
                 typeof(ResultState));
             outputPort.portName = "OUT";
             outputContainer.Add(outputPort);
-            inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input,
-                RuntimeNodeData.allowMultipleChildren ? Port.Capacity.Multi : Port.Capacity.Single,
-                typeof(ResultState));
-            inputPort.portName = "IN";
+            if (!runtimeNodeData.hasNoChildren)
+            {
+                inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input,
+                    RuntimeNodeData.allowMultipleChildren ? Port.Capacity.Multi : Port.Capacity.Single,
+                    typeof(ResultState));
+                inputPort.portName = "IN";
+                inputContainer.Add(inputPort);
+            }
 
-            inputContainer.Add(inputPort);
 
             CreatePorts(RuntimeNodeData.inputTypes, inputContainer, Direction.Input);
             CreatePorts(RuntimeNodeData.outputTypes, outputContainer, Direction.Output, Port.Capacity.Multi);
@@ -62,7 +67,7 @@ namespace AI.BTGraph
         /// </summary>
         public BTGraphNode()
         {
-            GUID = Guid.NewGuid();
+            Guid = Guid.NewGuid();
             name = "ROOT";
             title = name;
             RuntimeNodeData = new RuntimeNodeData(typeof(RootNode));
@@ -73,6 +78,29 @@ namespace AI.BTGraph
 
             RefreshPorts();
             RefreshExpandedState();
+        }
+
+        public void SetRuntimeState(ResultState newstate)
+        {
+            var children = Children();
+            foreach (var element in children.Where(child => child.name.Equals("node-border")))
+            {
+                Color c = new Color(0, 0, 0, 0);
+                switch (newstate)
+                {
+                    case ResultState.Running:
+                        c = Color.yellow;
+                        break;
+                    case ResultState.Success:
+                        c = Color.green;
+                        break;
+                    case ResultState.Failure:
+                        c = Color.red;
+                        break;
+                }
+
+                element.style.backgroundColor = c;
+            }
         }
     }
 }

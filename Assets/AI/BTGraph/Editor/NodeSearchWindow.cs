@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AI;
 using AI.BT;
+using AI.BT.Nodes;
 using AI.BTGraph;
 using AI.BTGraph.Editor;
 using UnityEditor;

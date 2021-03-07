@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
-namespace AI.BTGraph
+namespace AI.BTGraph.Attribute
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class InputAttribute : Attribute
+    public class InputAttribute : System.Attribute
     {
     }
 }

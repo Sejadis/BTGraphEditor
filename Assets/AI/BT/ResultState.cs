@@ -2,6 +2,7 @@
 {
     public enum ResultState
     {
+        Inactive,
         Running,
         Success,
         Failure

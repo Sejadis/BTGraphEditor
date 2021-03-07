@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using AI.BT;
+using AI.BT.Nodes;
+using AI.BT.Serialization;
 using AI.BTGraph.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -18,12 +21,12 @@ namespace AI.BTGraph
             var behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();
             behaviorTree.SetFromSerializedTree(serializedBehaviorTree);
             graphView.RootNode.SetPosition(serializedBehaviorTree.rootNode.graphRect);
-            LoadGraphFromTree(behaviorTree, graphView);
+            LoadGraphFromTree(behaviorTree, graphView,out _);
         }
 
-        public static void LoadGraphFromTree(BehaviorTree tree, BehaviourTreeGraphView graphView)
+        public static void LoadGraphFromTree(BehaviorTree tree, BehaviourTreeGraphView graphView, out Dictionary<BTNode, BTGraphNode> nodeMap)
         {
-            var nodeMap = new Dictionary<BTNode, BTGraphNode>();
+            nodeMap = new Dictionary<BTNode, BTGraphNode>();
             var edges = new List<Edge>();
             var nodes = new List<BTGraphNode>();
             //keep the root node
@@ -90,7 +93,7 @@ namespace AI.BTGraph
             return result;
         }
 
-        public static bool Save(BehaviourTreeGraphView graphView)
+        public static BehaviorTree Save(BehaviourTreeGraphView graphView )
         {
             //TODO decide between versions
             
@@ -117,7 +120,7 @@ namespace AI.BTGraph
             
             //V1            
             var graphRoot = graphView.RootNode;
-            if (graphRoot == null) return false;
+            if (graphRoot == null) return null;
 
             var graphNodes = graphView.nodes.ToList().Cast<BTGraphNode>();
             var nodeMap = new Dictionary<BTGraphNode, BTNode>();
@@ -150,15 +153,12 @@ namespace AI.BTGraph
                 parent.AddChild(child);
             }
 
-            //for debug logs
-            behaviorTree.rootNode.Execute();
-
             AssetDatabase.CreateAsset(behaviorTree, "Assets/bTree.asset");
             EditorUtility.SetDirty(behaviorTree);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
   
-            return true;
+            return behaviorTree;
         }
 
         private static void CreateAndMapNodes(IEnumerable<BTGraphNode> graphNodes,

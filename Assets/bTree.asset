@@ -12,93 +12,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc62655510744c47bbf906d448fe6df9, type: 3}
   m_Name: bTree
   m_EditorClassIdentifier: 
-  _serializedBehaviorTree:
+  serializedBehaviorTree:
     rootNode:
-      type: AI.BT.RootNode
-      guid: 2807b9c0-e3a1-40d0-8fcf-f1cba8e0fd8c
+      type: AI.BT.Nodes.RootNode
+      guid: 339de943-482b-48c8-9e2f-a384cfb57447
       parent: 
       children:
-      - 5168248a-c8dc-429a-86c0-357e34b7cb91
+      - e5ed6190-b05c-4ea5-a6cc-23b496f7217b
       graphRect:
         serializedVersion: 2
-        x: 1623
-        y: 494
-        width: 80
+        x: 1490
+        y: 462
+        width: 81
         height: 77
     nodes:
-    - type: AI.BT.RootNode
-      guid: 2807b9c0-e3a1-40d0-8fcf-f1cba8e0fd8c
+    - type: AI.BT.Nodes.RootNode
+      guid: 339de943-482b-48c8-9e2f-a384cfb57447
       parent: 
       children:
-      - 5168248a-c8dc-429a-86c0-357e34b7cb91
+      - e5ed6190-b05c-4ea5-a6cc-23b496f7217b
       graphRect:
         serializedVersion: 2
-        x: 1623
-        y: 494
-        width: 80
+        x: 1490
+        y: 462
+        width: 81
         height: 77
-    - type: AI.BT.TrueNode
-      guid: 5168248a-c8dc-429a-86c0-357e34b7cb91
-      parent: 2807b9c0-e3a1-40d0-8fcf-f1cba8e0fd8c
+    - type: AI.BT.Nodes.Composite.SequenceNode
+      guid: e5ed6190-b05c-4ea5-a6cc-23b496f7217b
+      parent: 339de943-482b-48c8-9e2f-a384cfb57447
       children:
-      - 1d564aec-6bf9-4352-983c-bbc251876279
-      - a19987db-c7eb-48ef-b0f9-b73a5d834147
-      - dd52b6b1-fb15-4ad7-8007-e988a7304132
+      - 42800eda-9429-4a78-8452-551677c53c40
+      - 02cd0d89-c943-4f42-bbdc-b9db9556d797
       graphRect:
         serializedVersion: 2
-        x: 1458
-        y: 540
-        width: 111
+        x: 1257
+        y: 451
+        width: 134
         height: 77
-    - type: AI.BT.WaitNode
-      guid: a19987db-c7eb-48ef-b0f9-b73a5d834147
-      parent: 5168248a-c8dc-429a-86c0-357e34b7cb91
-      children:
-      - 5ad8acf1-8bd5-4c25-abf3-5d799aaeb3e9
-      graphRect:
-        serializedVersion: 2
-        x: 1017
-        y: 364
-        width: 180
-        height: 101
-    - type: AI.BT.WaitNode
-      guid: 5ad8acf1-8bd5-4c25-abf3-5d799aaeb3e9
-      parent: a19987db-c7eb-48ef-b0f9-b73a5d834147
+    - type: AI.BT.Nodes.Decorator.FalseNode
+      guid: 02cd0d89-c943-4f42-bbdc-b9db9556d797
+      parent: e5ed6190-b05c-4ea5-a6cc-23b496f7217b
       children: []
       graphRect:
         serializedVersion: 2
-        x: 762
-        y: 321
-        width: 180
-        height: 101
-    - type: AI.BT.TrueNode
-      guid: dd52b6b1-fb15-4ad7-8007-e988a7304132
-      parent: 5168248a-c8dc-429a-86c0-357e34b7cb91
+        x: 1069
+        y: 556
+        width: 109
+        height: 77
+    - type: AI.BT.Nodes.LogNode
+      guid: 6c7572d7-f5b6-4bca-a28c-7811cbdc547a
+      parent: 42800eda-9429-4a78-8452-551677c53c40
       children: []
       graphRect:
         serializedVersion: 2
-        x: 1216
-        y: 262
-        width: 111
+        x: 865
+        y: 410
+        width: 109
         height: 77
-    - type: AI.BT.WaitNode
-      guid: 1d564aec-6bf9-4352-983c-bbc251876279
-      parent: 5168248a-c8dc-429a-86c0-357e34b7cb91
+    - type: AI.BT.Nodes.Decorator.RepeatNode
+      guid: 42800eda-9429-4a78-8452-551677c53c40
+      parent: e5ed6190-b05c-4ea5-a6cc-23b496f7217b
       children:
-      - 238f31df-78e0-44d0-b66e-16f0d7935816
+      - 6c7572d7-f5b6-4bca-a28c-7811cbdc547a
       graphRect:
         serializedVersion: 2
-        x: 1145
-        y: 580
-        width: 180
+        x: 1048
+        y: 401
+        width: 137
         height: 101
-    - type: AI.BT.TrueNode
-      guid: 238f31df-78e0-44d0-b66e-16f0d7935816
-      parent: 1d564aec-6bf9-4352-983c-bbc251876279
-      children: []
-      graphRect:
-        serializedVersion: 2
-        x: 822
-        y: 664
-        width: 111
-        height: 77

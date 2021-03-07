@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace AI.BT
+namespace AI.BT.Nodes
 {
     [Serializable]
     public sealed class RootNode : BTNode
     {
-        public new static bool AllowMultipleChildren => false;
-
         public override ResultState Execute()
         {
             //TODO remove and execute on max 1 child
@@ -22,11 +19,13 @@ namespace AI.BT
                     case ResultState.Failure:
                         resultState = state;
                         break;
-                    
+                    case ResultState.Running:
+                        resultState = state;
+                        break;
                 }
             }
 
-            Debug.Log("RootNode: " +  resultState);
+            Debug.Log("RootNode: " + resultState);
             return resultState;
         }
 
