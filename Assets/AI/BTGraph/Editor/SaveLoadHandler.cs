@@ -75,7 +75,8 @@ namespace AI.BTGraph
             {
                 if (node == behaviorTree.rootNode)
                 {
-                    //skip, we set it to the views root manually
+                    //only set saved position,skip the rest, we set it to the views root manually
+                    nodeMap[node].SetPosition(behaviorTree.nodePositions[node.Guid]);
                     continue;
                 }
 

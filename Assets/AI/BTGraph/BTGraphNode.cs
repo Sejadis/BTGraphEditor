@@ -18,6 +18,10 @@ namespace AI.BTGraph
 
         public Port OutputPort => outputPort;
 
+        public BTGraphNode(Type type) : this(new RuntimeNodeData(type))
+        {
+        }
+        
         public BTGraphNode(RuntimeNodeData runtimeNodeData)
         {
             name = runtimeNodeData.type.Name;

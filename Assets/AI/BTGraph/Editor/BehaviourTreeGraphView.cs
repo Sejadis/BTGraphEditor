@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using AI.BT;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace AI.BTGraph.Editor
@@ -77,6 +77,12 @@ namespace AI.BTGraph.Editor
         {
             var node = new BTGraphNode();
             node.capabilities &= ~Capabilities.Deletable;
+            var rect = node.GetPosition();
+            var windowSize = _editorWindow.position.size;
+            rect.position = new Vector2(windowSize.x * 0.9f,
+                windowSize.y * 0.5f);
+            rect.size = new Vector2(150, 150);
+            node.SetPosition(rect);
             return node;
         }
     }
