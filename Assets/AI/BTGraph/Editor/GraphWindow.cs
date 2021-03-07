@@ -79,30 +79,17 @@ namespace AI.BTGraph.Editor
             {
                 text = "Save"
             };
-            
-            var loadButton = new Button(() =>
-            {
-                graphView.ResetView();
-                var stream = new FileStream(Application.persistentDataPath + "/test.bt", FileMode.Open);
-                var serializer = new XmlSerializer(typeof(BehaviorTree), Utility.GetSubClasses(typeof(BTNode)).ToArray());
-                var tree = serializer.Deserialize(stream) as BehaviorTree;
-                // SaveLoadHandler.LoadGraphFromTree(tree, graphView);
-                SaveLoadHandler.LoadGraphFromFile(graphView);
-            })
-            {
-                text = "Load"
-            };
+
             var testNodeButton = new Button(CreateTestNodes)
             {
                 text = "Create TestNode"
             };
             var treePicker = new ObjectField()
             {
-                // objectType = typeof(BehaviorTree)
+                objectType = typeof(BehaviorTree)
             };
             treePicker.RegisterValueChangedCallback(OnTreeChanged);
             toolbar.Add(saveButton);
-            toolbar.Add(loadButton);
             toolbar.Add(testNodeButton);
             toolbar.Add(treePicker);
             return toolbar;
@@ -110,15 +97,12 @@ namespace AI.BTGraph.Editor
 
         private void OnTreeChanged(ChangeEvent<Object> changeEvent)
         {
-            // var tree = changeEvent.newValue as BehaviorTree;
-            // if (tree == null)
-            // {
-            //     return;
-            // }
+            var tree = changeEvent.newValue as BehaviorTree;
+            if (tree == null)
+            {
+                return;
+            }
             graphView.ResetView();
-            var stream = new FileStream(Application.persistentDataPath + "/test.bt", FileMode.Open);
-            var serializer = new XmlSerializer(typeof(BehaviorTree), Utility.GetSubClasses(typeof(BTNode)).ToArray());
-            var tree = serializer.Deserialize(stream) as BehaviorTree;
             SaveLoadHandler.LoadGraphFromTree(tree, graphView);
         }
 

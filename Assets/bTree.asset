@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc62655510744c47bbf906d448fe6df9, type: 3}
+  m_Name: bTree
+  m_EditorClassIdentifier: 
+  _serializedBehaviorTree:
+    rootNode:
+      type: AI.BT.RootNode
+      guid: 2807b9c0-e3a1-40d0-8fcf-f1cba8e0fd8c
+      parent: 
+      children:
+      - 5168248a-c8dc-429a-86c0-357e34b7cb91
+      graphRect:
+        serializedVersion: 2
+        x: 1623
+        y: 494
+        width: 80
+        height: 77
+    nodes:
+    - type: AI.BT.RootNode
+      guid: 2807b9c0-e3a1-40d0-8fcf-f1cba8e0fd8c
+      parent: 
+      children:
+      - 5168248a-c8dc-429a-86c0-357e34b7cb91
+      graphRect:
+        serializedVersion: 2
+        x: 1623
+        y: 494
+        width: 80
+        height: 77
+    - type: AI.BT.TrueNode
+      guid: 5168248a-c8dc-429a-86c0-357e34b7cb91
+      parent: 2807b9c0-e3a1-40d0-8fcf-f1cba8e0fd8c
+      children:
+      - 1d564aec-6bf9-4352-983c-bbc251876279
+      - a19987db-c7eb-48ef-b0f9-b73a5d834147
+      - dd52b6b1-fb15-4ad7-8007-e988a7304132
+      graphRect:
+        serializedVersion: 2
+        x: 1458
+        y: 540
+        width: 111
+        height: 77
+    - type: AI.BT.WaitNode
+      guid: a19987db-c7eb-48ef-b0f9-b73a5d834147
+      parent: 5168248a-c8dc-429a-86c0-357e34b7cb91
+      children:
+      - 5ad8acf1-8bd5-4c25-abf3-5d799aaeb3e9
+      graphRect:
+        serializedVersion: 2
+        x: 1017
+        y: 364
+        width: 180
+        height: 101
+    - type: AI.BT.WaitNode
+      guid: 5ad8acf1-8bd5-4c25-abf3-5d799aaeb3e9
+      parent: a19987db-c7eb-48ef-b0f9-b73a5d834147
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 762
+        y: 321
+        width: 180
+        height: 101
+    - type: AI.BT.TrueNode
+      guid: dd52b6b1-fb15-4ad7-8007-e988a7304132
+      parent: 5168248a-c8dc-429a-86c0-357e34b7cb91
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 1216
+        y: 262
+        width: 111
+        height: 77
+    - type: AI.BT.WaitNode
+      guid: 1d564aec-6bf9-4352-983c-bbc251876279
+      parent: 5168248a-c8dc-429a-86c0-357e34b7cb91
+      children:
+      - 238f31df-78e0-44d0-b66e-16f0d7935816
+      graphRect:
+        serializedVersion: 2
+        x: 1145
+        y: 580
+        width: 180
+        height: 101
+    - type: AI.BT.TrueNode
+      guid: 238f31df-78e0-44d0-b66e-16f0d7935816
+      parent: 1d564aec-6bf9-4352-983c-bbc251876279
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 822
+        y: 664
+        width: 111
+        height: 77

@@ -9,7 +9,7 @@ namespace AI.BTGraph
 {
     public class BTGraphNode : Node
     {
-        public string GUID;
+        public Guid GUID;
         public RuntimeNodeData RuntimeNodeData { get; }
         private Port inputPort;
         private Port outputPort;
@@ -22,7 +22,7 @@ namespace AI.BTGraph
         {
             name = runtimeNodeData.type.Name;
             RuntimeNodeData = runtimeNodeData;
-            GUID = Guid.NewGuid().ToString();
+            GUID = Guid.NewGuid();
             title = RuntimeNodeData.type.Name;
             outputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi,
                 typeof(ResultState));
@@ -58,6 +58,7 @@ namespace AI.BTGraph
         /// </summary>
         public BTGraphNode()
         {
+            GUID = Guid.NewGuid();
             name = "ROOT";
             title = name;
             RuntimeNodeData = new RuntimeNodeData(typeof(RootNode));

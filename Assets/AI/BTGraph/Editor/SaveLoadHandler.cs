@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using AI.BT;
 using AI.BTGraph.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace AI.BTGraph
 {
@@ -17,10 +15,12 @@ namespace AI.BTGraph
         {
             string json = File.ReadAllText(Application.persistentDataPath + "/json.bt");
             var serializedBehaviorTree = JsonUtility.FromJson<SerializedBehaviorTree>(json);
-            var behaviorTree = serializedBehaviorTree.ToBehaviorTree();
-            LoadGraphFromTree(behaviorTree,graphView);
-
+            var behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();
+            behaviorTree.SetFromSerializedTree(serializedBehaviorTree);
+            graphView.RootNode.SetPosition(serializedBehaviorTree.rootNode.graphRect);
+            LoadGraphFromTree(behaviorTree, graphView);
         }
+
         public static void LoadGraphFromTree(BehaviorTree tree, BehaviourTreeGraphView graphView)
         {
             var nodeMap = new Dictionary<BTNode, BTGraphNode>();
@@ -28,7 +28,7 @@ namespace AI.BTGraph
             var nodes = new List<BTGraphNode>();
             //keep the root node
             nodeMap[tree.rootNode] = graphView.RootNode;
-            
+
             nodes = LoadNodes(tree, nodeMap);
             edges = LoadEdges(tree, nodeMap);
 
@@ -36,6 +36,7 @@ namespace AI.BTGraph
             {
                 graphView.AddElement(edge);
             }
+
             foreach (var node in nodes)
             {
                 graphView.AddElement(node);
@@ -83,6 +84,7 @@ namespace AI.BTGraph
 
                 var runtimeData = node.CreateRuntimeNodeData();
                 var graphNode = new BTGraphNode(runtimeData);
+                graphNode.SetPosition(behaviorTree.nodePositions[node.Guid]);
                 result.Add(graphNode);
                 nodeMap[node] = graphNode;
             }
@@ -92,6 +94,30 @@ namespace AI.BTGraph
 
         public static bool Save(BehaviourTreeGraphView graphView)
         {
+            //TODO decide between versions
+            
+            //V2
+            // var nodes = graphView.nodes.ToList().Cast<BTGraphNode>();
+            // var serializedTree = new SerializedBehaviorTree();
+            // var root = new SerializedBTNode(graphView.RootNode);
+            // serializedTree.rootNode = root;
+            // serializedTree.nodes.Add(root);
+            // foreach (var node in nodes)
+            // {
+            //     if (node.GUID.Equals(root.guid))
+            //     {
+            //         continue;
+            //     }
+            //     
+            //     serializedTree.nodes.Add(new SerializedBTNode(node));
+            // }
+            //
+            // string jsonTree = JsonUtility.ToJson(serializedTree, false);
+            // File.WriteAllText(Application.persistentDataPath + "/json.bt", jsonTree);
+            // return true;
+
+            
+            //V1            
             var graphRoot = graphView.RootNode;
             if (graphRoot == null) return false;
 
@@ -100,10 +126,11 @@ namespace AI.BTGraph
 
             CreateAndMapNodes(graphNodes, ref nodeMap);
 
-            var behaviorTree = new BehaviorTree();//ScriptableObject.CreateInstance<BehaviorTree>();
-            foreach (var key in nodeMap.Keys)
+            var behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();//new BehaviorTree(); 
+            foreach (var node in nodeMap.Keys)
             {
-                behaviorTree.nodes.Add(nodeMap[key]);
+                behaviorTree.nodes.Add(nodeMap[node]);
+                behaviorTree.nodePositions[nodeMap[node].Guid] = node.GetPosition();
             }
 
             if (nodeMap.TryGetValue(graphView.RootNode, out var rootNode))
@@ -128,18 +155,11 @@ namespace AI.BTGraph
             //for debug logs
             behaviorTree.rootNode.Execute();
 
-            // AssetDatabase.CreateAsset(behaviorTree, "Assets/bTree.asset");
-            // EditorUtility.SetDirty(behaviorTree);
-            // AssetDatabase.SaveAssets();
-            // AssetDatabase.Refresh();
-            
-            
-            // var seri = new XmlSerializer(typeof(BehaviorTree), Utility.GetSubClasses(typeof(BTNode)).ToArray());
-            // var stream = new FileStream(Application.persistentDataPath + "/test.bt",FileMode.Create);
-            // seri.Serialize(stream, behaviorTree);
-
-            string json = JsonUtility.ToJson(new SerializedBehaviorTree(behaviorTree),false);
-            File.WriteAllText(Application.persistentDataPath + "/json.bt", json);
+            AssetDatabase.CreateAsset(behaviorTree, "Assets/bTree.asset");
+            EditorUtility.SetDirty(behaviorTree);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+  
             return true;
         }
 
