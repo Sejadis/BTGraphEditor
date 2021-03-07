@@ -47,7 +47,7 @@ namespace AI.BTGraph.Editor
             var map = CreateMiniMap();
             var grid = CreateGrid();
             var toolbar = CreateToolbar();
-            // graphView.Add(map);
+            graphView.Add(map);
             graphView.Insert(0, grid);
             rootVisualElement.Add(toolbar);
         }
@@ -55,8 +55,20 @@ namespace AI.BTGraph.Editor
         private static MiniMap CreateMiniMap()
         {
             var map = new MiniMap();
-            map.SetPosition(new Rect(10, 10, 150, 100));
-            map.capabilities &= ~Capabilities.Movable;
+            var windowSize = position.size;
+            var mapSize = new Vector2(150, 100);
+            var mapPosition = new Vector2(
+                //base pos is upper right corner, offset by window size, offset by margin
+                windowSize.x - mapSize.x - 25,
+                25);
+            
+            var mapRect = map.GetPosition();
+            mapRect.size = mapSize;
+            mapRect.position = mapPosition;
+            
+            map.SetPosition(mapRect);
+            map.anchored = true;
+            map.OnResized();
             return map;
         }
 
