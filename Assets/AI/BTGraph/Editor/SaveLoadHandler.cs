@@ -59,11 +59,8 @@ namespace AI.BTGraph
                 //the childs output port is conected to the parents input port
                 var outNode = nodeMap[node];
                 var inNode = nodeMap[node.Parent];
-                var edge = new Edge()
-                {
-                    input = inNode.InputPort,
-                    output = outNode.OutputPort,
-                };
+                var edge = outNode.OutputPort.ConnectTo(inNode.InputPort);
+                
                 result.Add(edge);
             }
 
