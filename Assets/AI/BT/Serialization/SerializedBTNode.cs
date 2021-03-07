@@ -4,7 +4,7 @@ using System.Linq;
 using AI.BTGraph;
 using UnityEngine;
 
-namespace AI.BT
+namespace AI.BT.Serialization
 {
     [Serializable]
     public class SerializedBTNode
@@ -29,13 +29,13 @@ namespace AI.BT
 
         public SerializedBTNode(BTGraphNode node)
         {
-            guid = node.GUID.ToString();
+            guid = node.Guid.ToString();
             type = node.RuntimeNodeData.type.ToString();
             graphRect = node.GetPosition();
             if (node.OutputPort?.connected ?? false)
             {
                 var edge = node.OutputPort.connections.ToList()[0];
-                parent = (edge.input.node as BTGraphNode).GUID.ToString();
+                parent = (edge.input.node as BTGraphNode).Guid.ToString();
             }
 
             children = new List<string>();
@@ -43,7 +43,7 @@ namespace AI.BT
             {
                 foreach (var edge in node.InputPort.connections.ToList())
                 {
-                    children.Add((edge.output.node as BTGraphNode).GUID.ToString());
+                    children.Add((edge.output.node as BTGraphNode).Guid.ToString());
                 }
             }
         }

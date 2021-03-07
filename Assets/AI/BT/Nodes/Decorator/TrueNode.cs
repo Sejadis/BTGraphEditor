@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AI.BT
+namespace AI.BT.Nodes.Decorator
 {
     [Serializable]
     public class TrueNode : BTNode
@@ -10,10 +10,10 @@ namespace AI.BT
 
         public override ResultState Execute()
         {
-            var result = ResultState.Failure;
-            Debug.Log("TrueNode: " +  result);
+            CurrentState = ResultState.Success;
+            Debug.Log("TrueNode: " +  CurrentState);
 
-            return result;
+            return CurrentState;
         }
     }
 }
