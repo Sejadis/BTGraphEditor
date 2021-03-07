@@ -30,7 +30,7 @@ namespace AI.BTGraph.Editor
 
         private void OnEnable()
         {
-            graphView = new BehaviourTreeGraphView()
+            graphView = new BehaviourTreeGraphView(this)
             {
                 name = "Behaviour Graph"
             };

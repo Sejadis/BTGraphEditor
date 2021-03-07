@@ -9,9 +9,12 @@ namespace AI.BTGraph.Editor
     public class BehaviourTreeGraphView : GraphView
     {
         public BTGraphNode RootNode { get; }
+        private NodeSearchWindow _searchWindow;
+        private EditorWindow _editorWindow;
 
-        public BehaviourTreeGraphView()
+        public BehaviourTreeGraphView(EditorWindow editorWindow)
         {
+            _editorWindow = editorWindow;
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
             this.AddManipulator(new ContentDragger());
@@ -22,9 +25,18 @@ namespace AI.BTGraph.Editor
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Styles/GraphEditor.uss");
             styleSheets.Add(styleSheet);
 
+            AddSearchWindow();
             var node = CreateRootNode();
             RootNode = node;
             AddElement(node);
+        }
+
+        private void AddSearchWindow()
+        {
+            _searchWindow = ScriptableObject.CreateInstance<NodeSearchWindow>();
+            _searchWindow.Init(this, _editorWindow);
+            nodeCreationRequest = context =>
+                SearchWindow.Open(new SearchWindowContext(context.screenMousePosition, 0, 0), _searchWindow);
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
