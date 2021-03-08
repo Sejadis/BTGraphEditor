@@ -13,46 +13,20 @@ namespace AI.BT.Nodes.Composite
     {
         public override ResultState Execute()
         {
-            if (currentNode == 0)
+            ResetChildrenState();
+
+            foreach (var child in children)
             {
-                ResetChildrenState();
-            }
-            if (currentNode >= children.Count || currentNode < 0)
-            {
-                //something wrong
-            }
-            else
-            {
-                var state = children[currentNode].Execute();
-                switch (state)
+                var state = child.Execute();
+                if (state == ResultState.Failure)
                 {
-                    case ResultState.Running:
-                        return CurrentState = ResultState.Running;
-                    case ResultState.Success:
-                        currentNode = 0;
-                        return CurrentState = ResultState.Success;
-                    case ResultState.Failure:
-                        currentNode++;
-                        if (currentNode == children.Count)
-                        {
-                            //all done
-                            currentNode = 0;
-                            return CurrentState = ResultState.Failure;
-                        }
-                        else
-                        {
-                            return CurrentState = ResultState.Running;
-                        }
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    continue;
                 }
+
+                return CurrentState = state;
             }
-
-            //we went through all children but all failed
-            currentNode = 0;
-            Debug.LogWarning("SelectorNode: all children done. " + ResultState.Failure +
-                             " We should never reach this point in code");
-
+            
+            //all children failed or doesnt have children
             return CurrentState = ResultState.Failure;
         }
     }

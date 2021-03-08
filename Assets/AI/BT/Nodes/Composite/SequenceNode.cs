@@ -13,47 +13,20 @@ namespace AI.BT.Nodes.Composite
     {
         public override ResultState Execute()
         {
-            if (currentNode == 0)
-            {
-                ResetChildrenState();
-            }
+            ResetChildrenState();
 
-            if (currentNode >= children.Count || currentNode < 0)
+            foreach (var child in children)
             {
-                //something wrong
-            }
-            else
-            {
-                var state = children[currentNode].Execute();
-                switch (state)
+                var state = child.Execute();
+                if (state == ResultState.Success)
                 {
-                    case ResultState.Running:
-                        return CurrentState = ResultState.Running;
-                    case ResultState.Success:
-                        currentNode++;
-                        if (currentNode == children.Count)
-                        {
-                            //all children done
-                            currentNode = 0;
-                            return CurrentState = ResultState.Success;
-                        }
-                        else
-                        {
-                            return CurrentState = ResultState.Running;
-                        }
-                    case ResultState.Failure:
-                        currentNode = 0;
-                        return CurrentState = ResultState.Failure;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    continue;
                 }
+
+                return CurrentState = state;
             }
-
-            //we went through all children and all succeeded
-            currentNode = 0;
-            Debug.LogWarning("SequenceNode: all children done. " + ResultState.Success +
-                             " We should never reach this point in code");
-
+            
+            //all children succeeded or doesnt have children
             return CurrentState = ResultState.Success;
         }
     }
