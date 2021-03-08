@@ -16,6 +16,7 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
 {
     private BehaviourTreeGraphView _graphView;
     private EditorWindow _window;
+    public GraphWindow GraphWindow { get; set; }
 
     public void Init(BehaviourTreeGraphView graphView, EditorWindow window)
     {
@@ -45,7 +46,7 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
                     });
             }
         }
-        
+
         searchTree.Add(new SearchTreeGroupEntry(new GUIContent("Decorator"), 1));
         foreach (var type in nodeTypes)
         {
@@ -91,6 +92,7 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
         var rect = node.GetPosition();
         rect.position = localMousePos;
         node.SetPosition(rect);
+        _graphView.EditorWindow.OnBlackboardValuesChanged += node.OnBlackboardValuesChanged;
         _graphView.AddElement(node);
         return true;
     }

@@ -9,12 +9,11 @@ namespace AI.BTGraph.Editor
     public class BehaviourTreeGraphView : GraphView
     {
         public BTGraphNode RootNode { get; }
-        private NodeSearchWindow _searchWindow;
-        private EditorWindow _editorWindow;
+        public GraphWindow EditorWindow { get; }
 
-        public BehaviourTreeGraphView(EditorWindow editorWindow)
+        public BehaviourTreeGraphView(GraphWindow editorWindow)
         {
-            _editorWindow = editorWindow;
+            EditorWindow = editorWindow;
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
             this.AddManipulator(new ContentDragger());
@@ -24,19 +23,9 @@ namespace AI.BTGraph.Editor
 
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Styles/GraphEditor.uss");
             styleSheets.Add(styleSheet);
-
-            AddSearchWindow();
             var node = CreateRootNode();
             RootNode = node;
             AddElement(node);
-        }
-
-        private void AddSearchWindow()
-        {
-            _searchWindow = ScriptableObject.CreateInstance<NodeSearchWindow>();
-            _searchWindow.Init(this, _editorWindow);
-            nodeCreationRequest = context =>
-                SearchWindow.Open(new SearchWindowContext(context.screenMousePosition, 0, 0), _searchWindow);
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -78,7 +67,7 @@ namespace AI.BTGraph.Editor
             var node = new BTGraphNode();
             node.capabilities &= ~Capabilities.Deletable;
             var rect = node.GetPosition();
-            var windowSize = _editorWindow.position.size;
+            var windowSize = EditorWindow.position.size;
             rect.position = new Vector2(windowSize.x * 0.9f,
                 windowSize.y * 0.5f);
             rect.size = new Vector2(150, 150);

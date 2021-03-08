@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using AI.BT;
 using AI.BT.Nodes;
 using AI.BT.Nodes.Decorator;
@@ -21,6 +23,13 @@ namespace AI.BTGraph.Editor
         private BehaviourTreeGraphView graphView;
         private BehaviorTree selectedBehaviorTree;
         private Dictionary<BTNode, BTGraphNode> nodeMap;
+        private Dictionary<string, BlackboardField> blackboardFields = new Dictionary<string, BlackboardField>();
+        private Blackboard blackboard;
+        private NodeSearchWindow _searchWindow;
+
+        public delegate void BlackboardValuesChanged(List<(string, string)> values);
+
+        public event BlackboardValuesChanged OnBlackboardValuesChanged;
 
         public BehaviorTree SelectedBehaviorTree
         {
@@ -80,18 +89,61 @@ namespace AI.BTGraph.Editor
             var grid = CreateGrid();
             var toolbar = CreateToolbar();
             var blackboard = CreateBlackBoard();
+            AddSearchWindow();
             graphView.Add(map);
             graphView.Add(blackboard);
             graphView.Insert(0, grid);
             rootVisualElement.Add(toolbar);
         }
 
+        private void AddSearchWindow()
+        {
+            _searchWindow = ScriptableObject.CreateInstance<NodeSearchWindow>();
+            _searchWindow.Init(graphView, this);
+            graphView.nodeCreationRequest = context =>
+                SearchWindow.Open(new SearchWindowContext(context.screenMousePosition, 0, 0), _searchWindow);
+        }
+
         private Blackboard CreateBlackBoard()
         {
-            var blackboard = new Blackboard(graphView);
+            blackboard = new Blackboard(graphView);
             blackboard.SetPosition(new Rect(10, 30, 150, 300));
             blackboard.addItemRequested = AddBlackboardValue;
+            blackboard.editTextRequested = EditBlackboardValue;
+            blackboard.showInMiniMap = true;
             return blackboard;
+        }
+
+        private void EditBlackboardValue(Blackboard blackboard, VisualElement element, string newValue)
+        {
+            if (!blackboardFields.ContainsKey(newValue) && element is BlackboardField bbField)
+            {
+                blackboardFields.Remove(bbField.text);
+                blackboardFields.Add(newValue, bbField);
+                InvokeValuesChanged();
+                bbField.text = newValue;
+            }
+        }
+
+        private void InvokeValuesChanged()
+        {
+            OnBlackboardValuesChanged?.Invoke(blackboardFields.Values.Select(
+                    field => (field.text, field.typeText)
+                ).ToList()
+            );
+        }
+
+        private bool DoesBlackboardFieldNameExist(string name)
+        {
+            return blackboard.Children().Where(ve =>
+            {
+                if (ve is BlackboardField field)
+                {
+                    return field.text.Equals(name);
+                }
+
+                return false;
+            }).Any();
         }
 
         private MiniMap CreateMiniMap()
@@ -260,18 +312,36 @@ namespace AI.BTGraph.Editor
 
         private void AddBlackboardValue(Blackboard blackboard)
         {
-            var field = new BlackboardField(null, "test", "string");
+            var name = "NewValue";
+            while (DoesBlackboardFieldNameExist(name))
+            {
+                ///TODO replace with incrementing value
+                name += "(1)";
+            }
+
+            var field = new BlackboardField(null, name, "string");
             var typeLabel = field.Q<Label>("typelabel");
-            field.Remove(typeLabel);
-            // var dropdown = 
-            // dropdown.AppendAction("Increase Count", a => { m_ActiveCount++; UpdateText(); }, a => DropdownMenuAction.Status.Normal);
-            // dropdown.AppendAction("Decrease Count", a => { m_ActiveCount--; UpdateText(); }, a => DropdownMenuAction.Status.Normal);
-            // dropdown.styles.color = Color.blue;
-            // dropdown.styles.backgroundColor = Color.red;
-            // dropdown.styles.paddingTop = 4;
-            // dropdown.styles.paddingBottom = 4;
-            // dropdown.styles.paddingLeft = 4;
-            // dropdown.styles.paddingRight = 4;
+            if (typeLabel != null)
+            {
+                field.Remove(typeLabel);
+            }
+
+            var dropdown = new ToolbarMenu();
+
+            // dropdown.menu. = field;
+            void Action(DropdownMenuAction a)
+            {
+                (a.userData as BlackboardField).typeText = a.name;
+                InvokeValuesChanged();
+            }
+
+            dropdown.menu.AppendAction("String", Action, (_) => DropdownMenuAction.Status.Normal, field);
+            dropdown.menu.AppendAction("Float", Action, (_) => DropdownMenuAction.Status.Normal, field);
+            dropdown.menu.AppendAction("Int", Action, (_) => DropdownMenuAction.Status.Normal, field);
+            dropdown.menu.AppendAction("Transform", Action, (_) => DropdownMenuAction.Status.Normal, field);
+
+            field.Add(dropdown);
+            blackboardFields[name] = field;
             blackboard.Add(field);
         }
     }
