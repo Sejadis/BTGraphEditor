@@ -28,9 +28,7 @@ namespace AI.BT.Nodes.Decorator
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            Debug.Log("InvertNode: -> " + resultState);
-            return resultState;
+            return CurrentState = resultState;
         }
     }
 }

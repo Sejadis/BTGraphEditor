@@ -4,16 +4,11 @@ using UnityEngine;
 namespace AI.BT.Nodes.Decorator
 {
     [Serializable]
-    public class TrueNode : BTNode
+    public class TrueNode : DecoratorNode
     {
-        // public override Type Type => typeof(TrueNode);
-
         public override ResultState Execute()
         {
-            CurrentState = ResultState.Success;
-            Debug.Log("TrueNode: " +  CurrentState);
-
-            return CurrentState;
+            return CurrentState = ResultState.Success;
         }
     }
 }
