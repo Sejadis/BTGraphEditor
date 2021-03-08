@@ -12,13 +12,20 @@ namespace AI.BT
 
         public void SetValue(string key, object value)
         {
-            if (values.TryGetValue(key, out var bbValue))
+            if (value == null)
             {
-                bbValue.SetValue(value);
+                UnSet(key);
             }
             else
             {
-                values[key] = new BlackboardValue(value);
+                if (values.TryGetValue(key, out var bbValue))
+                {
+                    bbValue.SetValue(value);
+                }
+                else
+                {
+                    values[key] = new BlackboardValue(value);
+                }
             }
         }
 
@@ -27,7 +34,7 @@ namespace AI.BT
             if (values.TryGetValue(key, out var bbValue))
             {
                 value = bbValue.GetValue<T>();
-                return true;
+                return bbValue.IsSet;
             }
             else
             {
@@ -50,6 +57,17 @@ namespace AI.BT
             {
                 values[key] = new BlackboardValue();
             }
+        }
+
+        public bool IsSet(string key)
+        {
+            return values.TryGetValue(key, out var value) && value.IsSet;
+        }
+
+        public Type GetType(string key)
+        {
+            values.TryGetValue(key, out var value);
+            return value?.type;
         }
 
         public void OnBeforeSerialize()

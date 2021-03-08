@@ -1,4 +1,6 @@
-﻿namespace AI.BT
+﻿using UnityEngine;
+
+namespace AI.BT
 {
     public class BlackboardAccessor<T>
     {
@@ -35,6 +37,16 @@
         private void SetKey()
         {
             Blackboard?.RegisterKey(key);
+        }
+
+        public void SetValue(Object value)
+        {
+            Blackboard.SetValue(Key, value);
+        }
+
+        public bool IsSet()
+        {
+            return Blackboard.IsSet(Key);
         }
     }
 }

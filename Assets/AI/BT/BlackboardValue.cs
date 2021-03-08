@@ -1,8 +1,11 @@
-﻿namespace AI.BT
+﻿using System;
+
+namespace AI.BT
 {
     public class BlackboardValue
     {
         public object value;
+        public Type type;
 
         public BlackboardValue(object value) => SetValue(value);
 
@@ -18,6 +21,7 @@
         public void SetValue(object value)
         {
             this.value = value;
+            type = value.GetType();
             IsSet = true;
         }
 
