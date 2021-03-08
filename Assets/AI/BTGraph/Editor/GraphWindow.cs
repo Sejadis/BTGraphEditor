@@ -66,7 +66,7 @@ namespace AI.BTGraph.Editor
             graphView.StretchToParentSize();
             rootVisualElement.Add(graphView);
             SetupGraphView();
-            CreateTestNodes();
+            // CreateTestNodes();
         }
 
         private void OnDisable()
@@ -89,7 +89,8 @@ namespace AI.BTGraph.Editor
         private Blackboard CreateBlackBoard()
         {
             var blackboard = new Blackboard(graphView);
-            blackboard.SetPosition(new Rect(10,30,150,300));
+            blackboard.SetPosition(new Rect(10, 30, 150, 300));
+            blackboard.addItemRequested = AddBlackboardValue;
             return blackboard;
         }
 
@@ -124,9 +125,8 @@ namespace AI.BTGraph.Editor
         {
             var toolbar = new Toolbar();
 
-            var saveButton = new Button(() =>
+            var saveButton = new ToolbarButton(() =>
             {
-                
                 selectedBehaviorTree = SaveLoadHandler.Save(graphView);
                 LoadGraph(selectedBehaviorTree);
             })
@@ -134,12 +134,12 @@ namespace AI.BTGraph.Editor
                 text = "Save"
             };
 
-            var testNodeButton = new Button(CreateTestNodes)
+            var testNodeButton = new ToolbarButton(CreateTestNodes)
             {
                 text = "Create TestNode"
             };
-            
-            var runTreeButton = new Button(RunTree)
+
+            var runTreeButton = new ToolbarButton(RunTree)
             {
                 text = "Run"
             };
@@ -194,7 +194,6 @@ namespace AI.BTGraph.Editor
 
         private void CreateTestNodes()
         {
-            return;
             var node1 = new BTGraphNode(typeof(TrueNode));
             var node2 = new BTGraphNode(typeof(WaitNode));
             node1.extensionContainer.Add(node2);
@@ -256,6 +255,24 @@ namespace AI.BTGraph.Editor
             }
 
             return true;
+        }
+
+
+        private void AddBlackboardValue(Blackboard blackboard)
+        {
+            var field = new BlackboardField(null, "test", "string");
+            var typeLabel = field.Q<Label>("typelabel");
+            field.Remove(typeLabel);
+            // var dropdown = 
+            // dropdown.AppendAction("Increase Count", a => { m_ActiveCount++; UpdateText(); }, a => DropdownMenuAction.Status.Normal);
+            // dropdown.AppendAction("Decrease Count", a => { m_ActiveCount--; UpdateText(); }, a => DropdownMenuAction.Status.Normal);
+            // dropdown.styles.color = Color.blue;
+            // dropdown.styles.backgroundColor = Color.red;
+            // dropdown.styles.paddingTop = 4;
+            // dropdown.styles.paddingBottom = 4;
+            // dropdown.styles.paddingLeft = 4;
+            // dropdown.styles.paddingRight = 4;
+            blackboard.Add(field);
         }
     }
 }

@@ -11,9 +11,9 @@ namespace AI.BT.Nodes.Decorator
 
         public override ResultState Execute()
         {
-            if (limit < 0)
+            if (limit <= 0)
             {
-                //TODO also catch 0 as unlimited?
+                //TODO handle 0 differently for unlimited?
                 return ResultState.Failure;
             }
             for (int i = 0; i < limit; i++)
