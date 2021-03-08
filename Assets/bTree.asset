@@ -15,10 +15,10 @@ MonoBehaviour:
   serializedBehaviorTree:
     rootNode:
       type: AI.BT.Nodes.RootNode
-      guid: 1528fffe-7cf6-4b5f-8a45-93e91c6ce25d
+      guid: 8d17d82c-5e72-4251-b020-7fcc8679278f
       parent: 
       children:
-      - 133c65b8-6939-4ab2-af53-baa7498bde7d
+      - fb326731-8499-4d5a-8c7e-642d009f8a1c
       graphRect:
         serializedVersion: 2
         x: 1490
@@ -27,23 +27,45 @@ MonoBehaviour:
         height: 77
     nodes:
     - type: AI.BT.Nodes.RootNode
-      guid: 1528fffe-7cf6-4b5f-8a45-93e91c6ce25d
+      guid: 8d17d82c-5e72-4251-b020-7fcc8679278f
       parent: 
       children:
-      - 133c65b8-6939-4ab2-af53-baa7498bde7d
+      - fb326731-8499-4d5a-8c7e-642d009f8a1c
       graphRect:
         serializedVersion: 2
         x: 1490
         y: 462
         width: 81
         height: 77
-    - type: AI.BT.Nodes.MoveTo
-      guid: 133c65b8-6939-4ab2-af53-baa7498bde7d
-      parent: 1528fffe-7cf6-4b5f-8a45-93e91c6ce25d
+    - type: AI.BT.Nodes.FindTargetNode
+      guid: a416d639-5170-41ee-9716-2fb434901fd8
+      parent: fb326731-8499-4d5a-8c7e-642d009f8a1c
       children: []
       graphRect:
         serializedVersion: 2
-        x: 1179
-        y: 460
+        x: 960
+        y: 374
+        width: 149
+        height: 101
+    - type: AI.BT.Nodes.Composite.SequenceNode
+      guid: fb326731-8499-4d5a-8c7e-642d009f8a1c
+      parent: 8d17d82c-5e72-4251-b020-7fcc8679278f
+      children:
+      - a416d639-5170-41ee-9716-2fb434901fd8
+      - 4b0bc276-17d7-4119-b6a0-9240bdf200d8
+      graphRect:
+        serializedVersion: 2
+        x: 1243
+        y: 489
+        width: 134
+        height: 77
+    - type: AI.BT.Nodes.MoveTo
+      guid: 4b0bc276-17d7-4119-b6a0-9240bdf200d8
+      parent: fb326731-8499-4d5a-8c7e-642d009f8a1c
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 968
+        y: 556
         width: 132
         height: 149
