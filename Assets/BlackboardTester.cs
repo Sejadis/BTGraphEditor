@@ -1,29 +1,24 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using AI.BT;
 using UnityEngine;
 
-public class BTRunner : MonoBehaviour
+public class BlackboardTester : MonoBehaviour
 {
     public BehaviorTree tree;
-
-    public int frequency;
-
-    private float nextActivation;
+    public float waitTime;
+    public Transform target = null;
+    public Blackboard Blackboard;
     // Start is called before the first frame update
     void Start()
     {
-        
+        Blackboard = tree.Blackboard;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (nextActivation < Time.time)
-        {
-            tree.Run();
-            nextActivation = Time.time + 1f / frequency * 60;
-        }
+        Blackboard.SetValue("waitTime", waitTime);
+        Blackboard.SetValue("target", target);
     }
 }

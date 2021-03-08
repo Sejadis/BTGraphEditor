@@ -8,9 +8,8 @@ namespace AI.BT.Nodes
     {
         [Input] public float waitTime = 3;
         [Output] public int transform;
-
+        [Input] public BlackboardAccessor<float> WaitTime = new BlackboardAccessor<float>("waitTime");
         private DateTime startTime = DateTime.MinValue;
-        // public override Type Type => typeof(WaitNode);
 
         public WaitNode()
         {
@@ -34,7 +33,12 @@ namespace AI.BT.Nodes
                 startTime = DateTime.Now;
             }
 
-            if (DateTime.Now - startTime > new TimeSpan(0, 0, 3))
+            float seconds;
+            if (!WaitTime.TryGetValue(out seconds))
+            {
+                seconds = waitTime;
+            }
+            if (DateTime.Now - startTime > TimeSpan.FromSeconds((double) seconds))
             {
                 CurrentState = ResultState.Success;
                 //reset

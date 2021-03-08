@@ -9,6 +9,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Blackboard = UnityEditor.Experimental.GraphView.Blackboard;
 using Object = UnityEngine.Object;
 
 namespace AI.BTGraph.Editor
@@ -158,7 +159,7 @@ namespace AI.BTGraph.Editor
 
         private void RunTree()
         {
-            selectedBehaviorTree?.rootNode.Execute();
+            selectedBehaviorTree?.Run();
         }
 
         private void OnTreeChanged(ChangeEvent<Object> changeEvent)

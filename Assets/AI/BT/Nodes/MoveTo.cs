@@ -8,7 +8,10 @@ namespace AI.BT.Nodes
     {
         [Input] public NavMeshAgent agent;
         [Input] public Transform target;
+        [Input] public BlackboardAccessor<Transform> Target = new BlackboardAccessor<Transform>("target");
+        private Transform currentTarget;
         private bool pathSet = false;
+
         public override ResultState Execute()
         {
             if (agent == null)
@@ -16,47 +19,68 @@ namespace AI.BT.Nodes
                 agent = GameObject.FindObjectOfType<NavMeshAgent>();
                 if (agent == null)
                 {
-                    // Debug.Log("MoveToNode: " + CurrentState);
-
                     return CurrentState = ResultState.Failure;
                 }
             }
 
-            if (target == null)
+            
+            // if (target == null)
+            // {
+            //     var targets = GameObject.FindGameObjectsWithTag("Target");
+            //     if (targets == null)
+            //     {
+            //         return CurrentState = ResultState.Failure;
+            //     }
+            //
+            //     target = targets[Random.Range(0, targets.Length)].transform;
+            //     if (Vector3.Distance(agent.transform.position, target.position) < 1f)
+            //     {
+            //         target = targets[Random.Range(0, targets.Length)].transform;
+            //     }
+            //     Debug.Log("new target is " + target.transform.name);
+            // }
+            if (!Target.TryGetValue(out var newTarget))
             {
-                var targets = GameObject.FindGameObjectsWithTag("Target");
-                if (targets == null)
-                {
-                    // Debug.Log("MoveToNode: " + CurrentState);
-
-                    return CurrentState = ResultState.Failure;
-                }
-
-                target = targets[Random.Range(0, targets.Length)].transform;
-                if (Vector3.Distance(agent.transform.position, target.position) < 1f)
-                {
-                    target = targets[Random.Range(0, targets.Length)].transform;
-                }
-                Debug.Log("new target is " + target.transform.name);
+                return CurrentState = ResultState.Failure;
             }
 
-            if (!pathSet)
+            if (!newTarget.Equals(currentTarget) || Vector3.Distance(agent.destination, newTarget.position) > 3f)
             {
-                agent.SetDestination(target.position);
-                pathSet = true;
+                agent.SetDestination(newTarget.position);
+                currentTarget = newTarget;
             }
 
-            if (pathSet)
+            if (currentTarget != null && Vector3.Distance(agent.transform.position, currentTarget.position) < 2f)
             {
-                if (Vector3.Distance(agent.transform.position,target.position) < 2f)
-                {
-                    target = null;
-                    pathSet = false;
-                    return CurrentState = ResultState.Success;
-                }
-
+                return CurrentState = ResultState.Success;
+            }
+            else if (currentTarget == null)
+            {
+                return CurrentState = ResultState.Failure;
+            }
+            else
+            {
+                //TODO figure out how to check if failed
                 return CurrentState = ResultState.Running;
             }
+
+            // if (!pathSet)
+            // {
+            //     agent.SetDestination(target.position);
+            //     pathSet = true;
+            // }
+
+            // if (pathSet)
+            // {
+            //     if (Vector3.Distance(agent.transform.position,target.position) < 2f)
+            //     {
+            //         target = null;
+            //         pathSet = false;
+            //         return CurrentState = ResultState.Success;
+            //     }
+            //
+            //     return CurrentState = ResultState.Running;
+            // }
 
             return CurrentState = ResultState.Failure;
         }

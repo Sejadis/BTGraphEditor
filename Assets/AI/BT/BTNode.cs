@@ -10,7 +10,6 @@ namespace AI.BT
         private Guid guid;
         protected BTNode parent;
         protected List<BTNode> children;
-
         public BTNode Parent => parent;
         public List<BTNode> Children => children;
         public static bool AllowMultipleChildren => false;

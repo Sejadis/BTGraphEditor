@@ -56,7 +56,11 @@ namespace AI.BTGraph
         {
             foreach (var kvp in types)
             {
-                var port = InstantiatePort(Orientation.Horizontal, direction, capacity, kvp.Value);
+                //if we have a generic type use it as the port type
+                //TODO change to only work with BlackboardAccessor
+                var genericTypes = kvp.Value.GetGenericArguments();
+                var type = genericTypes.Length > 0 ? genericTypes[0] : kvp.Value;
+                var port = InstantiatePort(Orientation.Horizontal, direction, capacity, type);
                 port.portName = kvp.Key;
                 visualElement.Add(port);
             }

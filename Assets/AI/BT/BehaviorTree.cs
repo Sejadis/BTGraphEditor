@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AI.BT.Nodes;
 using AI.BT.Serialization;
+using UnityEditor;
 using UnityEngine;
 
 namespace AI.BT
@@ -9,10 +11,52 @@ namespace AI.BT
     // [CreateAssetMenu(fileName = "Assets/bt", menuName = "Create/BT")]
     public class BehaviorTree : ScriptableObject, ISerializationCallbackReceiver
     {
+        public Blackboard Blackboard = new Blackboard();
+        [NonSerialized] private bool isInitialized;
         [NonSerialized] public RootNode rootNode;
         [NonSerialized] public List<BTNode> nodes = new List<BTNode>();
         [NonSerialized] public Dictionary<Guid, Rect> nodePositions = new Dictionary<Guid, Rect>();
         [SerializeField] private SerializedBehaviorTree serializedBehaviorTree;
+
+        public void Run()
+        {
+            if (!isInitialized)
+            {
+                Initialize();
+            }
+
+            rootNode.Execute();
+        }
+
+        private void Initialize()
+        {
+            foreach (var node in nodes)
+            {
+                var fields = node.GetType().GetFields();
+                foreach (var fieldInfo in fields)
+                {
+                    if (!fieldInfo.FieldType.IsGenericType) continue;
+
+                    if (fieldInfo.FieldType.GetGenericTypeDefinition() == typeof(BlackboardAccessor<>))
+                    {
+                        var field = fieldInfo.GetValue(node);
+                        if (field == null)
+                        {
+                            //TODO probably move creation to when setting the key
+                            var args = fieldInfo.FieldType.GetGenericArguments();
+                            var genericType = typeof(BlackboardAccessor<>).MakeGenericType(args);
+                            field = Activator.CreateInstance(genericType);
+                            fieldInfo.SetValue(node,field);
+                        }
+                        var property = field.GetType().GetProperty("Blackboard");
+                        if (property != null)
+                        {
+                            property.SetValue(field, Blackboard);
+                        }
+                    }
+                }
+            }
+        }
 
         public void SetFromSerializedTree(SerializedBehaviorTree serializedBehaviorTree)
         {
