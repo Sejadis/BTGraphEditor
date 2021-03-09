@@ -32,29 +32,7 @@ namespace AI.BT
         {
             foreach (var node in nodes)
             {
-                var fields = node.GetType().GetFields();
-                foreach (var fieldInfo in fields)
-                {
-                    if (!fieldInfo.FieldType.IsGenericType) continue;
-
-                    if (fieldInfo.FieldType.GetGenericTypeDefinition() == typeof(BlackboardAccessor<>))
-                    {
-                        var field = fieldInfo.GetValue(node);
-                        if (field == null)
-                        {
-                            //TODO probably move creation to when setting the key
-                            var args = fieldInfo.FieldType.GetGenericArguments();
-                            var genericType = typeof(BlackboardAccessor<>).MakeGenericType(args);
-                            field = Activator.CreateInstance(genericType);
-                            fieldInfo.SetValue(node,field);
-                        }
-                        var property = field.GetType().GetProperty("Blackboard");
-                        if (property != null)
-                        {
-                            property.SetValue(field, Blackboard);
-                        }
-                    }
-                }
+                node.SetBlackboardForAllAccessors(Blackboard);
             }
         }
 
@@ -76,6 +54,11 @@ namespace AI.BT
                 if (node.parent != string.Empty)
                 {
                     nodeMap[node.guid].SetParent(nodeMap[node.parent]);
+                }
+
+                foreach (var propertyKeyPair in node.propertyKeyMap)
+                {
+                    Blackboard.RegisterKey(propertyKeyPair.key);
                 }
 
                 foreach (var child in node.children)

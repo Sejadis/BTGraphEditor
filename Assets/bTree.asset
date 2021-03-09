@@ -15,57 +15,80 @@ MonoBehaviour:
   serializedBehaviorTree:
     rootNode:
       type: AI.BT.Nodes.RootNode
-      guid: 8d17d82c-5e72-4251-b020-7fcc8679278f
+      guid: 5650ade6-b44f-4137-9c23-3edd2ac9fd79
       parent: 
       children:
-      - fb326731-8499-4d5a-8c7e-642d009f8a1c
+      - 7b5167c4-a257-4e76-8724-bf80c8e2959b
       graphRect:
         serializedVersion: 2
         x: 1490
         y: 462
         width: 81
         height: 77
+      propertyKeyMap: []
     nodes:
     - type: AI.BT.Nodes.RootNode
-      guid: 8d17d82c-5e72-4251-b020-7fcc8679278f
+      guid: 5650ade6-b44f-4137-9c23-3edd2ac9fd79
       parent: 
       children:
-      - fb326731-8499-4d5a-8c7e-642d009f8a1c
+      - 7b5167c4-a257-4e76-8724-bf80c8e2959b
       graphRect:
         serializedVersion: 2
         x: 1490
         y: 462
         width: 81
         height: 77
-    - type: AI.BT.Nodes.FindTargetNode
-      guid: a416d639-5170-41ee-9716-2fb434901fd8
-      parent: fb326731-8499-4d5a-8c7e-642d009f8a1c
-      children: []
-      graphRect:
-        serializedVersion: 2
-        x: 960
-        y: 374
-        width: 149
-        height: 101
-    - type: AI.BT.Nodes.Composite.SequenceNode
-      guid: fb326731-8499-4d5a-8c7e-642d009f8a1c
-      parent: 8d17d82c-5e72-4251-b020-7fcc8679278f
-      children:
-      - a416d639-5170-41ee-9716-2fb434901fd8
-      - 4b0bc276-17d7-4119-b6a0-9240bdf200d8
-      graphRect:
-        serializedVersion: 2
-        x: 1243
-        y: 489
-        width: 134
-        height: 77
+      propertyKeyMap: []
     - type: AI.BT.Nodes.MoveTo
-      guid: 4b0bc276-17d7-4119-b6a0-9240bdf200d8
-      parent: fb326731-8499-4d5a-8c7e-642d009f8a1c
+      guid: fe050d2e-2263-4faa-8667-5a64c55115c9
+      parent: 7b5167c4-a257-4e76-8724-bf80c8e2959b
       children: []
       graphRect:
         serializedVersion: 2
-        x: 968
-        y: 556
-        width: 132
+        x: 914
+        y: 549
+        width: 195
         height: 149
+      propertyKeyMap:
+      - propertyName: Target
+        key: player
+    - type: AI.BT.Nodes.Composite.SelectorNode
+      guid: 7b5167c4-a257-4e76-8724-bf80c8e2959b
+      parent: 5650ade6-b44f-4137-9c23-3edd2ac9fd79
+      children:
+      - fe050d2e-2263-4faa-8667-5a64c55115c9
+      - 2bd37cff-a460-4abc-8b6a-1bc609d0d959
+      graphRect:
+        serializedVersion: 2
+        x: 1246
+        y: 438
+        width: 124
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.Decorator.InvertNode
+      guid: 2bd37cff-a460-4abc-8b6a-1bc609d0d959
+      parent: 7b5167c4-a257-4e76-8724-bf80c8e2959b
+      children:
+      - 6caa8a52-7fe9-4436-9d55-f4905e7e7122
+      graphRect:
+        serializedVersion: 2
+        x: 1090
+        y: 435
+        width: 109
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.FindTargetNode
+      guid: 6caa8a52-7fe9-4436-9d55-f4905e7e7122
+      parent: 2bd37cff-a460-4abc-8b6a-1bc609d0d959
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 741
+        y: 383
+        width: 268
+        height: 101
+      propertyKeyMap:
+      - propertyName: Targets
+        key: none
+      - propertyName: Target
+        key: player

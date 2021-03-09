@@ -1,11 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Reflection;
+using Object = UnityEngine.Object;
 
 namespace AI.BT
 {
-    public class BlackboardAccessor<T>
+    public class BlackboardAccessor
     {
+        public static object CreateFromFieldInfo(FieldInfo fieldInfo)
+        {
+            var args = fieldInfo.FieldType.GetGenericArguments();
+            var genericType = typeof(BlackboardAccessor<>).MakeGenericType(args);
+            var field = Activator.CreateInstance(genericType);
+            return field;
+        }
+
         public Blackboard Blackboard { get; set; }
-        private string key;
+        protected string key;
 
         public BlackboardAccessor()
         {
@@ -29,15 +39,23 @@ namespace AI.BT
             }
         }
 
+        protected void SetKey()
+        {
+            Blackboard?.RegisterKey(key);
+        }
+    }
+
+    public class BlackboardAccessor<T> : BlackboardAccessor
+    {
+        public BlackboardAccessor(string waittime) : base(waittime)
+        {
+        }
+
         public bool TryGetValue(out T value)
         {
             return Blackboard.TryGetValue(Key, out value);
         }
 
-        private void SetKey()
-        {
-            Blackboard?.RegisterKey(key);
-        }
 
         public void SetValue(Object value)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AI.BT;
 using AI.BT.Nodes;
+using AI.BTGraph.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
@@ -15,17 +16,26 @@ namespace AI.BTGraph
     {
         public Guid Guid;
         public RuntimeNodeData RuntimeNodeData { get; }
-        private Port inputPort;
-        private Port outputPort;
+        public Port InputPort { get; }
+        public Port OutputPort { get; }
 
-        private List<Port> ports = new List<Port>();
+        public List<PropertyKeyPair> BlackboardConnections
+        {
+            get
+            {
+                return portBlackboardValues.Select(kvp =>
+                    new PropertyKeyPair()
+                    {
+                        propertyName = kvp.Key.portName, //field name matches port name
+                        key = kvp.Value.Label.text //label text matches key
+                    }
+                ).ToList();
+            }
+        }
 
-        //TODO refactor tuple into separate element
-        private Dictionary<Port, (ToolbarMenu, Label)> dropdowns = new Dictionary<Port, (ToolbarMenu, Label)>();
-
-        public Port InputPort => inputPort;
-
-        public Port OutputPort => outputPort;
+        private readonly List<Port> ports = new List<Port>();
+        private readonly Dictionary<Port, PortBlackboardValue>
+            portBlackboardValues = new Dictionary<Port, PortBlackboardValue>();
 
         public BTGraphNode(Type type) : this(new RuntimeNodeData(type))
         {
@@ -37,19 +47,19 @@ namespace AI.BTGraph
             RuntimeNodeData = runtimeNodeData;
             Guid = Guid.NewGuid();
             title = RuntimeNodeData.type.Name;
-            outputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi,
+            OutputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi,
                 typeof(ResultState));
-            outputPort.portName = "OUT";
-            ports.Add(outputPort);
-            outputContainer.Add(outputPort);
+            OutputPort.portName = "OUT";
+            ports.Add(OutputPort);
+            outputContainer.Add(OutputPort);
             if (!runtimeNodeData.hasNoChildren)
             {
-                inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input,
+                InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input,
                     RuntimeNodeData.allowMultipleChildren ? Port.Capacity.Multi : Port.Capacity.Single,
                     typeof(ResultState));
-                inputPort.portName = "IN";
-                ports.Add(inputPort);
-                inputContainer.Add(inputPort);
+                InputPort.portName = "IN";
+                ports.Add(InputPort);
+                inputContainer.Add(InputPort);
             }
 
             CreatePorts(RuntimeNodeData.inputTypes, inputContainer, Direction.Input);
@@ -59,29 +69,50 @@ namespace AI.BTGraph
             RefreshExpandedState();
         }
 
-        private void CreatePorts(Dictionary<string, Type> types, VisualElement visualElement, Direction direction,
+        public BTGraphNode(RuntimeNodeData runtimeNodeData, Dictionary<string, BlackboardField> blackboardFieldMap) :
+            this(runtimeNodeData)
+        {
+            foreach (var key in blackboardFieldMap.Keys)
+            {
+                //add all matching fields
+                OnBlackboardValuesChanged(blackboardFieldMap[key]);
+            }
+
+            foreach (var port in portBlackboardValues.Keys)
+            {
+                var portBlackboardValue = portBlackboardValues[port];
+
+                if (!runtimeNodeData.inputTypes.TryGetValue(port.portName, out var key) &&
+                    !runtimeNodeData.outputTypes.TryGetValue(port.portName, out key))
+                {
+                    continue;
+                }
+
+                if (blackboardFieldMap.TryGetValue(key.key, out var blackboardField))
+                {
+                    portBlackboardValue.SetCurrentFieldAndUpdateVisuals(blackboardField);
+                }
+            }
+        }
+
+        private void CreatePorts(Dictionary<string, KeyTypePair> types, VisualElement visualElement,
+            Direction direction,
             Port.Capacity capacity = Port.Capacity.Single)
         {
             foreach (var kvp in types)
             {
                 //if we have a generic type use it as the port type
                 //TODO change to only work with BlackboardAccessor
-                var genericTypes = kvp.Value.GetGenericArguments();
-                var type = genericTypes.Length > 0 ? genericTypes[0] : kvp.Value;
+                var genericTypes = kvp.Value.type.GetGenericArguments();
+                var type = genericTypes.Length > 0 ? genericTypes[0] : kvp.Value.type;
                 var port = InstantiatePort(Orientation.Horizontal, direction, capacity, type);
                 port.portName = kvp.Key;
+                port.name = port.portName;
                 port.style.justifyContent = Justify.SpaceBetween;
-                var element = new VisualElement();
-                element.style.flexDirection = FlexDirection.Row;
-                var label = new Label("(none)");
-                var dropdown = new ToolbarMenu();
-                element.Add(label);
-                element.Add(dropdown);
+                var element = new PortBlackboardValue();
                 port.contentContainer.Add(element);
-                // port.contentContainer.Add(label);
-                // port.contentContainer.Add(dropdown);
 
-                dropdowns[port] = (dropdown, label);
+                portBlackboardValues[port] = element;
 
                 ports.Add(port);
                 visualElement.Add(port);
@@ -97,10 +128,10 @@ namespace AI.BTGraph
             name = "ROOT";
             title = name;
             RuntimeNodeData = new RuntimeNodeData(typeof(RootNode));
-            inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single,
+            InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single,
                 typeof(ResultState));
-            inputPort.portName = "IN";
-            inputContainer.Add(inputPort);
+            InputPort.portName = "IN";
+            inputContainer.Add(InputPort);
 
             RefreshPorts();
             RefreshExpandedState();
@@ -130,45 +161,51 @@ namespace AI.BTGraph
         }
 
 
-        public void OnBlackboardValuesChanged(List<(string, string)> values)
+        public void OnBlackboardValuesChanged(BlackboardField blackboardField)
         {
             foreach (var port in ports)
             {
-                var bbValues = values.Where(tuple =>
-                    {
-                        string typeString;
-                        if (!TypeMapper.typeMap.TryGetValue(tuple.Item2, out typeString))
-                        {
-                            //type is not mapped
-                            typeString = tuple.Item2;
-                        }
-
-                        var valueType = Type.GetType(typeString);
-                        return port.portType == valueType;
-                    })
-                    .Select(tuple => tuple.Item1);
-                if (bbValues.Any())
+                string typeString;
+                if (!TypeMapper.typeMap.TryGetValue(blackboardField.typeText, out typeString))
                 {
-                    ClearDropdown(dropdowns[port].Item1);
-                    foreach (var bbValue in bbValues)
-                    {
-                        dropdowns[port].Item1.menu.AppendAction(bbValue,
-                            action => { dropdowns[port].Item2.text = $"({action.name})"; });
-                    }
-
-                    // var logString = "Keys found for Port " + port.portName + ":";
-                    // logString = bbValues.Aggregate(logString, (current, value) => current + (" " + value));
-                    //
-                    // Debug.Log(logString);
+                    //type is not mapped
+                    typeString = blackboardField.name;
                 }
-            }
-        }
 
-        private void ClearDropdown(ToolbarMenu dropdown)
-        {
-            for (var i = dropdown.menu.MenuItems().Count - 1; i >= 0; i--)
-            {
-                dropdown.menu.RemoveItemAt(i);
+                var valueType = Type.GetType(typeString);
+                if (port.portType == valueType)
+                {
+                    if (portBlackboardValues.TryGetValue(port, out var value))
+                    {
+                        value.AddFieldReference(blackboardField);
+                    }
+                }
+                else
+                {
+                    if (portBlackboardValues.TryGetValue(port, out var value))
+                    {
+                        value.RemoveFieldReference(blackboardField);
+                    }
+                }
+
+                // var blackboardValues = values.Where(keyTypePair =>
+                //     {
+                //         string typeString;
+                //         if (!TypeMapper.typeMap.TryGetValue(keyTypePair.typeString, out typeString))
+                //         {
+                //             //type is not mapped
+                //             typeString = keyTypePair.typeString;
+                //         }
+                //
+                //         var valueType = Type.GetType(typeString);
+                //         return port.portType == valueType;
+                //     })
+                //     .Select(keyTypePair => keyTypePair.key);
+                // if (blackboardValues.Any())
+                // {
+                //     portBlackboardValues[port].ClearDropdown();
+                //     portBlackboardValues[port].UpdateValues(blackboardValues);
+                // }
             }
         }
     }

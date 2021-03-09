@@ -12,22 +12,23 @@ namespace AI.BT
     {
         public static RuntimeNodeData CreateRuntimeNodeData(this BTNode node)
         {
-            var type = node.GetType();
-            return new RuntimeNodeData(type);
-        }
-
-        public static BTNode CreateBTNode(this BTGraphNode node)
-        {
-            var instance = Activator.CreateInstance(node.RuntimeNodeData.type);
-            var btNode = instance as BTNode;
-            return btNode;
+            return new RuntimeNodeData(node);
         }
 
         public static BTNode CreateBTNode(this SerializedBTNode node)
         {
             var instance = Activator.CreateInstance(Type.GetType(node.type) ?? throw new InvalidOperationException());
-
             var btNode = instance as BTNode;
+            foreach (var propertyKeyPair in node.propertyKeyMap)
+            {
+                var fieldInfo = btNode.GetType().GetField(propertyKeyPair.propertyName) ??
+                                throw new InvalidOperationException();
+                if (btNode.GetOrCreateBlackboardAccessor(fieldInfo) is BlackboardAccessor accessor)
+                {
+                    accessor.Key = propertyKeyPair.key;
+                }
+            }
+
             return btNode;
         }
     }

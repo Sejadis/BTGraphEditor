@@ -14,6 +14,7 @@ namespace AI.BT.Serialization
         public string parent;
         public List<string> children;
         public Rect graphRect;
+        public List<PropertyKeyPair> propertyKeyMap;
 
         public SerializedBTNode(BTNode node)
         {
@@ -25,26 +26,22 @@ namespace AI.BT.Serialization
             {
                 children.Add(child.Guid.ToString());
             }
-        }
 
-        public SerializedBTNode(BTGraphNode node)
-        {
-            guid = node.Guid.ToString();
-            type = node.RuntimeNodeData.type.ToString();
-            graphRect = node.GetPosition();
-            if (node.OutputPort?.connected ?? false)
+            propertyKeyMap = new List<PropertyKeyPair>();
+            var accessorFieldInfos = node.GetBlackboardAccessorFieldInfos();
+            foreach (var fieldInfo in accessorFieldInfos)
             {
-                var edge = node.OutputPort.connections.ToList()[0];
-                parent = (edge.input.node as BTGraphNode).Guid.ToString();
-            }
-
-            children = new List<string>();
-            if (node.InputPort.connected)
-            {
-                foreach (var edge in node.InputPort.connections.ToList())
+                var pkp = new PropertyKeyPair();
+                pkp.propertyName = fieldInfo.Name;
+                if (fieldInfo.GetValue(node) is BlackboardAccessor accessor)
                 {
-                    children.Add((edge.output.node as BTGraphNode).Guid.ToString());
+                    pkp.key = accessor.Key;
                 }
+                else
+                {
+                    Debug.LogWarning($"Cant access BlackboardAccessor {fieldInfo.Name} on {type}");
+                }
+                propertyKeyMap.Add(pkp);
             }
         }
     }

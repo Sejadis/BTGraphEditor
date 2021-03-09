@@ -18,18 +18,21 @@ namespace AI.BTGraph.Editor
 {
     public class GraphWindow : EditorWindow
     {
+        public delegate void BlackboardValuesChanged(BlackboardField values);
+
+        public event BlackboardValuesChanged OnBlackboardValuesChanged;
+
         private List<Type> NodeTypes = new List<Type>();
         private List<RuntimeNodeData> NodeData = new List<RuntimeNodeData>();
         private BehaviourTreeGraphView graphView;
         private BehaviorTree selectedBehaviorTree;
+
         private Dictionary<BTNode, BTGraphNode> nodeMap;
+
+        //string represents the blackboard key
         private Dictionary<string, BlackboardField> blackboardFields = new Dictionary<string, BlackboardField>();
         private Blackboard blackboard;
         private NodeSearchWindow _searchWindow;
-
-        public delegate void BlackboardValuesChanged(List<(string, string)> values);
-
-        public event BlackboardValuesChanged OnBlackboardValuesChanged;
 
         public BehaviorTree SelectedBehaviorTree
         {
@@ -116,21 +119,18 @@ namespace AI.BTGraph.Editor
 
         private void EditBlackboardValue(Blackboard blackboard, VisualElement element, string newValue)
         {
-            if (!blackboardFields.ContainsKey(newValue) && element is BlackboardField bbField)
+            if (!blackboardFields.ContainsKey(newValue) && element is BlackboardField blackboardField)
             {
-                blackboardFields.Remove(bbField.text);
-                blackboardFields.Add(newValue, bbField);
-                InvokeValuesChanged();
-                bbField.text = newValue;
+                blackboardFields.Remove(blackboardField.text);
+                blackboardFields.Add(newValue, blackboardField);
+                blackboardField.text = newValue;
+                InvokeValuesChanged(blackboardField);
             }
         }
 
-        private void InvokeValuesChanged()
+        private void InvokeValuesChanged(BlackboardField blackboardField)
         {
-            OnBlackboardValuesChanged?.Invoke(blackboardFields.Values.Select(
-                    field => (field.text, field.typeText)
-                ).ToList()
-            );
+            OnBlackboardValuesChanged?.Invoke(blackboardField);
         }
 
         private bool DoesBlackboardFieldNameExist(string name)
@@ -309,17 +309,36 @@ namespace AI.BTGraph.Editor
             return true;
         }
 
-
         private void AddBlackboardValue(Blackboard blackboard)
         {
-            var name = "NewValue";
+            AddBlackboardValue("", null, blackboard);
+        }
+
+        public BlackboardField AddBlackboardValue(string key, Type type, Blackboard blackboard = null)
+        {
+            var field = CreateBlackboardField(key, type);
+            if (blackboard == null)
+            {
+                this.blackboard.Add(field);
+            }
+            else
+            {
+                blackboard.Add(field);
+            }
+
+            return field;
+        }
+
+        private BlackboardField CreateBlackboardField(string key = "", Type type = null)
+        {
+            var name = !string.IsNullOrEmpty(key) ? key : "NewValue";
             while (DoesBlackboardFieldNameExist(name))
             {
                 ///TODO replace with incrementing value
                 name += "(1)";
             }
 
-            var field = new BlackboardField(null, name, "string");
+            var field = new BlackboardField(null, name, type?.Name ?? "string");
             var typeLabel = field.Q<Label>("typelabel");
             if (typeLabel != null)
             {
@@ -331,8 +350,11 @@ namespace AI.BTGraph.Editor
             // dropdown.menu. = field;
             void Action(DropdownMenuAction a)
             {
-                (a.userData as BlackboardField).typeText = a.name;
-                InvokeValuesChanged();
+                if (a.userData is BlackboardField blackboardField)
+                {
+                    blackboardField.typeText = a.name;
+                    InvokeValuesChanged(blackboardField);
+                }
             }
 
             dropdown.menu.AppendAction("String", Action, (_) => DropdownMenuAction.Status.Normal, field);
@@ -342,7 +364,12 @@ namespace AI.BTGraph.Editor
 
             field.Add(dropdown);
             blackboardFields[name] = field;
-            blackboard.Add(field);
+            return field;
+        }
+
+        public void ClearBlackboard()
+        {
+            blackboard.Clear();
         }
     }
 }

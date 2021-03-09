@@ -588,9 +588,9 @@ MonoBehaviour:
   visionMask:
     serializedVersion: 2
     m_Bits: 128
-  range: 10
-  angle: 80
-  detectionFrequency: 5
+  range: 20
+  angle: 120
+  detectionFrequency: 60
   debug: 1
 --- !u!114 &1270438615
 MonoBehaviour:
@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 44288bbf744539540a22f94c5bd5f78e, type: 2}
-  frequency: 60
+  frequency: 120
 --- !u!1 &1310251726
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +827,7 @@ GameObject:
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Target
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
@@ -1167,7 +1167,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943587108}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30.41, y: 1.5, z: 20.1}
+  m_LocalPosition: {x: 45.97, y: 1.5, z: 21.66}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
