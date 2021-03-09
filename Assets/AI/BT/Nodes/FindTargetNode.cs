@@ -6,8 +6,8 @@ namespace AI.BT.Nodes
 {
     public class FindTargetNode : BTNode
     {
-        [Input] public BlackboardAccessor<Transform[]> Targets = new BlackboardAccessor<Transform[]>("targets");
-        [Output] public BlackboardAccessor<Transform> Target = new BlackboardAccessor<Transform>("target");
+        [Input] public BlackboardAccessor<Transform[]> Targets;
+        [Output] public BlackboardAccessor<Transform> Target;
 
         public override ResultState Execute()
         {

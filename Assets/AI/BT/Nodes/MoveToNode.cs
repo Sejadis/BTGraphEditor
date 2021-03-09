@@ -6,9 +6,8 @@ namespace AI.BT.Nodes
 {
     public class MoveTo : BTNode
     {
-        [Input] public NavMeshAgent agent;
-        [Input] public Transform target;
-        [Input] public BlackboardAccessor<Transform> Target = new BlackboardAccessor<Transform>("target");
+        public NavMeshAgent agent;
+        [Input] public BlackboardAccessor<Transform> Target;
         private Transform currentTarget;
         private bool pathSet = false;
 
@@ -23,22 +22,6 @@ namespace AI.BT.Nodes
                 }
             }
 
-            
-            // if (target == null)
-            // {
-            //     var targets = GameObject.FindGameObjectsWithTag("Target");
-            //     if (targets == null)
-            //     {
-            //         return CurrentState = ResultState.Failure;
-            //     }
-            //
-            //     target = targets[Random.Range(0, targets.Length)].transform;
-            //     if (Vector3.Distance(agent.transform.position, target.position) < 1f)
-            //     {
-            //         target = targets[Random.Range(0, targets.Length)].transform;
-            //     }
-            //     Debug.Log("new target is " + target.transform.name);
-            // }
             if (!Target.TryGetValue(out var newTarget))
             {
                 return CurrentState = ResultState.Failure;
@@ -63,24 +46,6 @@ namespace AI.BT.Nodes
                 //TODO figure out how to check if failed
                 return CurrentState = ResultState.Running;
             }
-
-            // if (!pathSet)
-            // {
-            //     agent.SetDestination(target.position);
-            //     pathSet = true;
-            // }
-
-            // if (pathSet)
-            // {
-            //     if (Vector3.Distance(agent.transform.position,target.position) < 2f)
-            //     {
-            //         target = null;
-            //         pathSet = false;
-            //         return CurrentState = ResultState.Success;
-            //     }
-            //
-            //     return CurrentState = ResultState.Running;
-            // }
 
             return CurrentState = ResultState.Failure;
         }
