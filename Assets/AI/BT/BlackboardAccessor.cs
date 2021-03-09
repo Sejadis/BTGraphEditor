@@ -47,6 +47,10 @@ namespace AI.BT
 
     public class BlackboardAccessor<T> : BlackboardAccessor
     {
+        public BlackboardAccessor() : base()
+        {
+        }
+
         public BlackboardAccessor(string waittime) : base(waittime)
         {
         }

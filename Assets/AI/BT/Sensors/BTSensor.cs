@@ -7,11 +7,19 @@ namespace AI.BT.Sensors
     public abstract class BTSensor : MonoBehaviour
     {
         protected Blackboard blackboard;
+        public BTRunner BlackboardProvider;
         public string Key;
 
         private void Awake()
         {
-            blackboard = GetComponent<IBlackboardProvider>().Blackboard;
+            if (BlackboardProvider != null)
+            {
+                blackboard = BlackboardProvider.Blackboard;
+            }
+            else
+            {
+                blackboard = GetComponent<IBlackboardProvider>().Blackboard;
+            }
         }
 
         /// <summary>
@@ -25,6 +33,7 @@ namespace AI.BT.Sensors
                 Debug.LogError("Trying to set blackboard value with empty key", this);
                 return;
             }
+
             if (value != null)
             {
                 blackboard?.SetValue(Key, value);

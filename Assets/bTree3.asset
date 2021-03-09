@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc62655510744c47bbf906d448fe6df9, type: 3}
+  m_Name: bTree3
+  m_EditorClassIdentifier: 
+  serializedBehaviorTree:
+    rootNode:
+      type: AI.BT.Nodes.RootNode
+      guid: 1088bf00-e0d3-4432-8d40-b244b7a5ddef
+      parent: 
+      children:
+      - 09c8dc62-43dd-444c-8596-5205cd944427
+      graphRect:
+        serializedVersion: 2
+        x: 1490
+        y: 462
+        width: 81
+        height: 77
+      propertyKeyMap: []
+    nodes:
+    - type: AI.BT.Nodes.RootNode
+      guid: 1088bf00-e0d3-4432-8d40-b244b7a5ddef
+      parent: 
+      children:
+      - 09c8dc62-43dd-444c-8596-5205cd944427
+      graphRect:
+        serializedVersion: 2
+        x: 1490
+        y: 462
+        width: 81
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.SelectRandomTransformNode
+      guid: d7e78d7b-ac44-428a-849e-4cb93a758649
+      parent: d12ffc11-2d6d-437d-b22d-0a62b8050cfd
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 344
+        y: 441
+        width: 279
+        height: 101
+      propertyKeyMap:
+      - propertyName: array
+        key: waypoints
+      - propertyName: selection
+        key: target
+    - type: AI.BT.Nodes.MoveTo
+      guid: f10e4bcf-c983-4d7d-a8ed-839d45279b49
+      parent: 22ec8461-4522-4806-937c-bb5ee315cb96
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 422
+        y: 241
+        width: 195
+        height: 101
+      propertyKeyMap:
+      - propertyName: Target
+        key: player
+    - type: AI.BT.Nodes.MoveTo
+      guid: cbeaca0f-4423-4fd3-ae2f-e07433622ed7
+      parent: d12ffc11-2d6d-437d-b22d-0a62b8050cfd
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 423
+        y: 604
+        width: 186
+        height: 101
+      propertyKeyMap:
+      - propertyName: Target
+        key: target
+    - type: AI.BT.Nodes.Composite.SelectorNode
+      guid: 09c8dc62-43dd-444c-8596-5205cd944427
+      parent: 1088bf00-e0d3-4432-8d40-b244b7a5ddef
+      children:
+      - d12ffc11-2d6d-437d-b22d-0a62b8050cfd
+      - 22ec8461-4522-4806-937c-bb5ee315cb96
+      graphRect:
+        serializedVersion: 2
+        x: 1195
+        y: 448
+        width: 124
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.Composite.SequenceNode
+      guid: d12ffc11-2d6d-437d-b22d-0a62b8050cfd
+      parent: 09c8dc62-43dd-444c-8596-5205cd944427
+      children:
+      - d7e78d7b-ac44-428a-849e-4cb93a758649
+      - cbeaca0f-4423-4fd3-ae2f-e07433622ed7
+      graphRect:
+        serializedVersion: 2
+        x: 872
+        y: 548
+        width: 134
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.Composite.SequenceNode
+      guid: 22ec8461-4522-4806-937c-bb5ee315cb96
+      parent: 09c8dc62-43dd-444c-8596-5205cd944427
+      children:
+      - e3572526-1341-45ad-931d-7e0f110769da
+      - f10e4bcf-c983-4d7d-a8ed-839d45279b49
+      graphRect:
+        serializedVersion: 2
+        x: 874
+        y: 339
+        width: 134
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.IsSetNode
+      guid: e3572526-1341-45ad-931d-7e0f110769da
+      parent: 22ec8461-4522-4806-937c-bb5ee315cb96
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 392
+        y: 117
+        width: 226
+        height: 101
+      propertyKeyMap:
+      - propertyName: keyToCheck
+        key: player

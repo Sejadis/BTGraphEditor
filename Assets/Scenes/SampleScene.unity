@@ -584,7 +584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846f3501206144b7a2978ebeab5c7faa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Key: targets
+  BlackboardProvider: {fileID: 0}
+  Key: player
   visionMask:
     serializedVersion: 2
     m_Bits: 128
@@ -619,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099ef15958848ba48a58b2db37c3b88c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: e5a2875ae84083640a1f218c8a00e2f9, type: 2}
+  tree: {fileID: 11400000, guid: 57513a8ffd648c942a7865b6b233cb2d, type: 2}
   frequency: 120
 --- !u!1 &1310251726
 GameObject:
@@ -928,6 +929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1599827724}
+  - component: {fileID: 1599827725}
   m_Layer: 0
   m_Name: Waypoints
   m_TagString: Untagged
@@ -953,6 +955,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1599827725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599827723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68fd293189f455b9d94cb7783788c15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlackboardProvider: {fileID: 1270438616}
+  Key: waypoints
+  objects:
+  - {fileID: 1798037961}
+  - {fileID: 1024268428}
+  - {fileID: 989960288}
+  - {fileID: 713839356}
 --- !u!1 &1611351782
 GameObject:
   m_ObjectHideFlags: 0

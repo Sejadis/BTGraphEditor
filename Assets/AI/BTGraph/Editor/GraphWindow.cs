@@ -48,6 +48,7 @@ namespace AI.BTGraph.Editor
                 else
                 {
                     graphView.ResetView();
+                    blackboard.Clear();
                 }
 
                 currentAssetLabel.text = value?.name ?? string.Empty;
