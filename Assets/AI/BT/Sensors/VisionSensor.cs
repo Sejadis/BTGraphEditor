@@ -39,7 +39,7 @@ namespace AI.BT.Sensors
                 }
             }
             //ToList() to create a copy, so we can clear it here next time without affecting the blackboard
-            WriteToBlackBoard(hits.Count > 0 ? hits.ToList() : null);
+            WriteToBlackBoard(hits.Count > 0 ? hits.ToArray() : null);
         }
 
         private void OnDrawGizmos()

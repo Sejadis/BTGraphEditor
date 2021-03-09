@@ -6,7 +6,7 @@ namespace AI.BT.Nodes
 {
     public class FindTargetNode : BTNode
     {
-        [Input] public BlackboardAccessor<List<Transform>> Targets = new BlackboardAccessor<List<Transform>>("targets");
+        [Input] public BlackboardAccessor<Transform[]> Targets = new BlackboardAccessor<Transform[]>("targets");
         [Output] public BlackboardAccessor<Transform> Target = new BlackboardAccessor<Transform>("target");
 
         public override ResultState Execute()
@@ -14,7 +14,7 @@ namespace AI.BT.Nodes
             var resultState = ResultState.Inactive;
             if (Targets.TryGetValue(out var targets))
             {
-                resultState = targets.Count > 0 ? ResultState.Success : ResultState.Failure;
+                resultState = targets.Length > 0 ? ResultState.Success : ResultState.Failure;
             }
             else
             {

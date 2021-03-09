@@ -33,6 +33,7 @@ namespace AI.BTGraph.Editor
         private Dictionary<string, BlackboardField> blackboardFields = new Dictionary<string, BlackboardField>();
         private Blackboard blackboard;
         private NodeSearchWindow _searchWindow;
+        private Label currentAssetLabel;
 
         public BehaviorTree SelectedBehaviorTree
         {
@@ -40,7 +41,16 @@ namespace AI.BTGraph.Editor
             set
             {
                 selectedBehaviorTree = value;
-                LoadGraph(selectedBehaviorTree);
+                if (selectedBehaviorTree != null)
+                {
+                    LoadGraph(selectedBehaviorTree);
+                }
+                else
+                {
+                    graphView.ResetView();
+                }
+
+                currentAssetLabel.text = value?.name ?? string.Empty;
             }
         }
 
@@ -64,6 +74,7 @@ namespace AI.BTGraph.Editor
             }
 
             var window = ShowWindow();
+            // window.TreeInstanceID = instanceID;
             window.SelectedBehaviorTree = tree;
             return true;
         }
@@ -78,6 +89,10 @@ namespace AI.BTGraph.Editor
             graphView.StretchToParentSize();
             rootVisualElement.Add(graphView);
             SetupGraphView();
+            if (selectedBehaviorTree != null)
+            {
+                LoadGraph(selectedBehaviorTree);
+            }
             // CreateTestNodes();
         }
 
@@ -179,11 +194,16 @@ namespace AI.BTGraph.Editor
 
             var saveButton = new ToolbarButton(() =>
             {
-                selectedBehaviorTree = SaveLoadHandler.Save(graphView);
+                SelectedBehaviorTree = SaveLoadHandler.Save(graphView, selectedBehaviorTree);
                 LoadGraph(selectedBehaviorTree);
             })
             {
                 text = "Save"
+            };
+
+            var newButton = new ToolbarButton(() => { SelectedBehaviorTree = null; })
+            {
+                text = "New"
             };
 
             var testNodeButton = new ToolbarButton(CreateTestNodes)
@@ -201,11 +221,15 @@ namespace AI.BTGraph.Editor
                 objectType = typeof(BehaviorTree)
             };
 
+            currentAssetLabel = new Label(selectedBehaviorTree?.name);
+
             treePicker.RegisterValueChangedCallback(OnTreeChanged);
             toolbar.Add(saveButton);
+            toolbar.Add(newButton);
             toolbar.Add(testNodeButton);
             toolbar.Add(treePicker);
             toolbar.Add(runTreeButton);
+            toolbar.Add(currentAssetLabel);
             return toolbar;
         }
 
@@ -361,6 +385,7 @@ namespace AI.BTGraph.Editor
             dropdown.menu.AppendAction("Float", Action, (_) => DropdownMenuAction.Status.Normal, field);
             dropdown.menu.AppendAction("Int", Action, (_) => DropdownMenuAction.Status.Normal, field);
             dropdown.menu.AppendAction("Transform", Action, (_) => DropdownMenuAction.Status.Normal, field);
+            dropdown.menu.AppendAction("Transform[]", Action, (_) => DropdownMenuAction.Status.Normal, field);
 
             field.Add(dropdown);
             blackboardFields[name] = field;

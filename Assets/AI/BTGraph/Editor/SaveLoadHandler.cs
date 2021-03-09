@@ -127,7 +127,7 @@ namespace AI.BTGraph
             return result;
         }
 
-        public static BehaviorTree Save(BehaviourTreeGraphView graphView)
+        public static BehaviorTree Save(BehaviourTreeGraphView graphView, BehaviorTree behaviorTree)
         {
             //TODO decide between versions
 
@@ -155,11 +155,19 @@ namespace AI.BTGraph
             //V1            
             var graphRoot = graphView.RootNode;
             if (graphRoot == null) return null;
-
             var graphNodes = graphView.nodes.ToList().Cast<BTGraphNode>();
             var nodeMap = new Dictionary<BTGraphNode, BTNode>();
+            var createNew = false;
+            if (behaviorTree == null)
+            {
+                createNew = true;
+                behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>(); //new BehaviorTree(); 
+            }
+            else
+            {
+                behaviorTree.Clear();
+            }
 
-            var behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>(); //new BehaviorTree(); 
             CreateAndMapNodes(graphNodes, ref nodeMap, behaviorTree);
 
             foreach (var node in nodeMap.Keys)
@@ -187,7 +195,11 @@ namespace AI.BTGraph
                 parent.AddChild(child);
             }
 
-            AssetDatabase.CreateAsset(behaviorTree, "Assets/bTree.asset");
+            if (createNew)
+            {
+                AssetDatabase.CreateAsset(behaviorTree, "Assets/bTree.asset");
+            }
+            
             EditorUtility.SetDirty(behaviorTree);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

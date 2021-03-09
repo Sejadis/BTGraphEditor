@@ -18,6 +18,7 @@ namespace AI.BT
         [NonSerialized] public Dictionary<Guid, Rect> nodePositions = new Dictionary<Guid, Rect>();
         [SerializeField] private SerializedBehaviorTree serializedBehaviorTree;
 
+
         public void Run()
         {
             if (!isInitialized)
@@ -26,6 +27,16 @@ namespace AI.BT
             }
 
             rootNode.Execute();
+        }
+        
+        public void Clear()
+        {
+            Blackboard = new Blackboard();
+            isInitialized = false;
+            rootNode = null;
+            nodes.Clear();
+            nodePositions.Clear();
+            serializedBehaviorTree = null;
         }
 
         private void Initialize()
@@ -84,5 +95,6 @@ namespace AI.BT
             //TODO necessary?
             serializedBehaviorTree = null;
         }
+
     }
 }
