@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
-using AI.BT.Sensors;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace AI.BT
+namespace AI.BT.Sensors
 {
     public class KeySetter : BTSensor
     {

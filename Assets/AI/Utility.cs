@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using AI.BT;
+using AI.BT.Nodes;
 using AI.BTGraph;
 
 namespace AI

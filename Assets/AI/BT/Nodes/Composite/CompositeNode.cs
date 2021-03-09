@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AI.BT
+namespace AI.BT.Nodes.Composite
 {
     [Serializable]
     public abstract class CompositeNode : BTNode, IMayHaveMultipleChildren

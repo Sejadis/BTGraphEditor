@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AI.BT
+namespace AI.BT.Nodes.Decorator
 {
     [Serializable]
     public abstract class DecoratorNode : BTNode

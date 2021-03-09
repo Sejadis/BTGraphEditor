@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using AI;
 using AI.BT;
 using AI.BT.Nodes;
+using AI.BT.Nodes.Composite;
+using AI.BT.Nodes.Decorator;
 using AI.BTGraph;
 using AI.BTGraph.Editor;
 using NUnit.Framework.Internal;

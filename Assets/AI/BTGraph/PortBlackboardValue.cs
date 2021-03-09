@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
-namespace AI.BTGraph.Editor
+namespace AI.BTGraph
 {
     public class PortBlackboardValue : VisualElement
     {

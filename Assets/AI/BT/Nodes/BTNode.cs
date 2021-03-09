@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace AI.BT
+namespace AI.BT.Nodes
 {
     [Serializable]
     public abstract class BTNode

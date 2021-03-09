@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using AI.BT;
+using AI.BT.Nodes;
 using AI.BTGraph.Attribute;
 
 namespace AI.BTGraph
