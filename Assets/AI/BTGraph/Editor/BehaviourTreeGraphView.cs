@@ -33,7 +33,9 @@ namespace AI.BTGraph.Editor
             var compatiblePorts = new List<Port>();
             ports.ForEach(port =>
             {
-                if (port.portType == startPort.portType &&
+                if ((port.portType == startPort.portType ||
+                     port.portType == typeof(object) ||
+                     startPort.portType == typeof(object)) &&
                     port.direction != startPort.direction &&
                     port != startPort &&
                     startPort.node != port.node)

@@ -173,7 +173,7 @@ namespace AI.BTGraph
                 }
 
                 var valueType = Type.GetType(typeString);
-                if (port.portType == valueType)
+                if (port.portType == valueType || port.portType == typeof(object))
                 {
                     if (portBlackboardValues.TryGetValue(port, out var value))
                     {
@@ -187,25 +187,6 @@ namespace AI.BTGraph
                         value.RemoveFieldReference(blackboardField);
                     }
                 }
-
-                // var blackboardValues = values.Where(keyTypePair =>
-                //     {
-                //         string typeString;
-                //         if (!TypeMapper.typeMap.TryGetValue(keyTypePair.typeString, out typeString))
-                //         {
-                //             //type is not mapped
-                //             typeString = keyTypePair.typeString;
-                //         }
-                //
-                //         var valueType = Type.GetType(typeString);
-                //         return port.portType == valueType;
-                //     })
-                //     .Select(keyTypePair => keyTypePair.key);
-                // if (blackboardValues.Any())
-                // {
-                //     portBlackboardValues[port].ClearDropdown();
-                //     portBlackboardValues[port].UpdateValues(blackboardValues);
-                // }
             }
         }
     }
