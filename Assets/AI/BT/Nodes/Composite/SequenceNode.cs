@@ -11,22 +11,33 @@ namespace AI.BT.Nodes.Composite
     [Serializable]
     public class SequenceNode : CompositeNode
     {
+        private int currentNode = 0;
+
         public override ResultState Execute()
         {
             ResetChildrenState();
 
-            foreach (var child in children)
+            for (var i = currentNode; i < children.Count; i++)
             {
+                var child = children[i];
                 var state = child.Execute();
-                if (state == ResultState.Success)
+                switch (state)
                 {
-                    continue;
+                    case ResultState.Running:
+                        currentNode = i;
+                        return CurrentState = ResultState.Running;
+                        break;
+                    case ResultState.Success:
+                        continue;
+                        break;
+                    case ResultState.Failure:
+                        return CurrentState = ResultState.Failure;
+                        break;
                 }
-
-                return CurrentState = state;
             }
-            
-            //all children succeeded or doesnt have children
+
+            //end reached, reset and return success
+            currentNode = 0;
             return CurrentState = ResultState.Success;
         }
     }
