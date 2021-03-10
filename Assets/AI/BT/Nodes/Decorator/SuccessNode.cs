@@ -4,7 +4,7 @@ using UnityEngine;
 namespace AI.BT.Nodes.Decorator
 {
     [Serializable]
-    public class TrueNode : DecoratorNode
+    public class SuccessNode : DecoratorNode
     {
         public override ResultState Execute()
         {

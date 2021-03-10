@@ -271,7 +271,7 @@ namespace AI.BTGraph.Editor
 
         private void CreateTestNodes()
         {
-            var node1 = new BTGraphNode(typeof(TrueNode));
+            var node1 = new BTGraphNode(typeof(SuccessNode));
             var node2 = new BTGraphNode(typeof(WaitNode));
             node1.extensionContainer.Add(node2);
             node2.StretchToParentSize();
