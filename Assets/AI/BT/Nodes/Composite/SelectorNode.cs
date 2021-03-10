@@ -11,22 +11,33 @@ namespace AI.BT.Nodes.Composite
     [Serializable]
     public class SelectorNode : CompositeNode
     {
+        protected int currentNode = 0;
+
         public override ResultState Execute()
         {
             ResetChildrenState();
 
-            foreach (var child in children)
+            for (var i = currentNode; i < children.Count; i++)
             {
-                var state = child.Execute();
-                if (state == ResultState.Failure)
+                var state = children[i].Execute();
+                switch (state)
                 {
-                    continue;
+                    case ResultState.Running:
+                        currentNode = i;
+                        return CurrentState = ResultState.Running;
+                        break;
+                    case ResultState.Success:
+                        currentNode = 0;
+                        return CurrentState = ResultState.Success;
+                        break;
+                    case ResultState.Failure:
+                        continue;
+                        break;
                 }
-
-                return CurrentState = state;
             }
-            
-            //all children failed or doesnt have children
+
+            //end reached, reset and return failure
+            currentNode = 0;
             return CurrentState = ResultState.Failure;
         }
     }
