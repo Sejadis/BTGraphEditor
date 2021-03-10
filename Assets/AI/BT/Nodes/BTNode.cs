@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -77,7 +78,7 @@ namespace AI.BT.Nodes
                     if (field == null)
                     {
                         field = BlackboardAccessor.CreateFromFieldInfo(fieldInfo);
-                        fieldInfo.SetValue(this,field);
+                        fieldInfo.SetValue(this, field);
                     }
                     var property = field.GetType().GetProperty("Blackboard");
                     if (property != null)
@@ -89,6 +90,21 @@ namespace AI.BT.Nodes
         }
 
         #endregion
+
+        public void Sort(Dictionary<Guid, Rect> nodePositions)
+        {
+            if (children.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var child in children)
+            {
+                child.Sort(nodePositions);
+            }
+
+            children = children.OrderBy(child => nodePositions[child.guid].position.y).ToList();
+        }
 
         public void Initialize(Blackboard blackboard, List<PropertyKeyPair> blackboardConnections)
         {

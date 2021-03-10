@@ -129,30 +129,6 @@ namespace AI.BTGraph
 
         public static BehaviorTree Save(BehaviourTreeGraphView graphView, BehaviorTree behaviorTree)
         {
-            //TODO decide between versions
-
-            //V2
-            // var nodes = graphView.nodes.ToList().Cast<BTGraphNode>();
-            // var serializedTree = new SerializedBehaviorTree();
-            // var root = new SerializedBTNode(graphView.RootNode);
-            // serializedTree.rootNode = root;
-            // serializedTree.nodes.Add(root);
-            // foreach (var node in nodes)
-            // {
-            //     if (node.GUID.Equals(root.guid))
-            //     {
-            //         continue;
-            //     }
-            //     
-            //     serializedTree.nodes.Add(new SerializedBTNode(node));
-            // }
-            //
-            // string jsonTree = JsonUtility.ToJson(serializedTree, false);
-            // File.WriteAllText(Application.persistentDataPath + "/json.bt", jsonTree);
-            // return true;
-
-
-            //V1            
             var graphRoot = graphView.RootNode;
             if (graphRoot == null) return null;
             var graphNodes = graphView.nodes.ToList().Cast<BTGraphNode>();
@@ -194,6 +170,8 @@ namespace AI.BTGraph
                 child.SetParent(parent);
                 parent.AddChild(child);
             }
+
+            behaviorTree.SortNodes();
 
             if (createNew)
             {

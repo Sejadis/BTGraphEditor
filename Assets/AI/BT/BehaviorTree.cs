@@ -96,5 +96,9 @@ namespace AI.BT
             serializedBehaviorTree = null;
         }
 
+        public void SortNodes()
+        {
+            rootNode.Sort(nodePositions);
+        }
     }
 }
