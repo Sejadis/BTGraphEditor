@@ -128,14 +128,22 @@ namespace AI.BT.Nodes
                 }
 
                 //set key
-                var key = blackboardConnections.Find(pkp => pkp.propertyName.Equals(fieldInfo.Name)).key;
-                key = key.Replace("(", "").Replace(")", "");
+                var propertyKeyPair = blackboardConnections.Find(pkp => pkp.propertyName.Equals(fieldInfo.Name));
+                var key = propertyKeyPair.key.Replace("(", "").Replace(")", "");
                 if (!string.IsNullOrEmpty(key))
                 {
                     var keyProperty = accessor.GetType().GetProperty("Key");
                     if (keyProperty != null)
                     {
                         keyProperty.SetValue(accessor, key);
+                    }
+                }
+                if (propertyKeyPair.overrideValue != null)
+                {
+                    var overrideProperty = accessor.GetType().GetProperty("OverrideValue");
+                    if (overrideProperty != null)
+                    {
+                        overrideProperty.SetValue(accessor, propertyKeyPair.overrideValue);
                     }
                 }
             }

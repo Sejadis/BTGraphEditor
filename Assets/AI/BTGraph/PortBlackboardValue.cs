@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -9,18 +10,32 @@ namespace AI.BTGraph
     {
         public Label Label { get; }
         public ToolbarMenu Dropdown { get; }
+        public object overrideValue => isSetToManual ? inputField.text : null;
         public string Key => Label.text.Replace("(", "").Replace(")", "");
         private HashSet<BlackboardField> blackboardFields = new HashSet<BlackboardField>();
 
         private BlackboardField currentBlackboardField;
+        private FloatField inputField;
+        private readonly bool allowsManual;
+        private bool isSetToManual;
 
-        public PortBlackboardValue()
+        public PortBlackboardValue(bool allowsManual, string overrideValue)
         {
             style.flexDirection = FlexDirection.Row;
             Label = new Label("(none)");
+            inputField = new FloatField();
             Dropdown = new ToolbarMenu();
+            this.allowsManual = allowsManual;
+
             Add(Label);
             Add(Dropdown);
+            if (!string.IsNullOrEmpty(overrideValue) && Single.TryParse(overrideValue, out var result))
+            {
+                inputField.value = result;
+                SetToManualInput();
+            }
+
+            UpdateValues();
         }
 
         private void ClearDropdown()
@@ -34,6 +49,11 @@ namespace AI.BTGraph
         public void UpdateValues()
         {
             ClearDropdown();
+            if (allowsManual)
+            {
+                Dropdown.menu.AppendAction("Set manually", action => { SetToManualInput(); });
+            }
+
             foreach (var blackboardField in blackboardFields)
             {
                 Dropdown.menu.AppendAction(blackboardField.text,
@@ -56,6 +76,14 @@ namespace AI.BTGraph
             // Debug.Log(logString);
         }
 
+        private void SetToManualInput()
+        {
+            isSetToManual = true;
+            currentBlackboardField = null;
+            Remove(Label);
+            Insert(0, inputField);
+        }
+
         public void AddFieldReference(BlackboardField blackboardField)
         {
             blackboardFields.Add(blackboardField);
@@ -70,8 +98,15 @@ namespace AI.BTGraph
 
         public void SetCurrentFieldAndUpdateVisuals(BlackboardField blackboardField)
         {
+            if (isSetToManual)
+            {
+                Remove(inputField);
+                Insert(0, Label);
+            }
+
             currentBlackboardField = blackboardField;
             Label.text = $"({blackboardField.text})";
+            isSetToManual = false;
         }
     }
 }

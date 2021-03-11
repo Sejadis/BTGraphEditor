@@ -37,6 +37,8 @@ namespace AI.BT.Serialization
                 if (fieldInfo.GetValue(node) is BlackboardAccessor accessor)
                 {
                     pkp.key = accessor.Key;
+                    //TODO make sure all supported values are properly passed (as string might return null)
+                    pkp.overrideValue = accessor.OverrideValue as string;
                 }
                 else
                 {

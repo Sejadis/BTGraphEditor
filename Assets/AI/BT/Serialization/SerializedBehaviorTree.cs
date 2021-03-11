@@ -13,8 +13,7 @@ namespace AI.BT.Serialization
         {
             foreach (var node in behaviorTree.nodes)
             {
-                var newNode = new SerializedBTNode(node);
-                newNode.graphRect = behaviorTree.nodePositions[node.Guid];
+                var newNode = new SerializedBTNode(node) {graphRect = behaviorTree.nodePositions[node.Guid]};
                 nodes.Add(newNode);
             }
 

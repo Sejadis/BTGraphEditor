@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace AI.BT
@@ -39,6 +40,8 @@ namespace AI.BT
             }
         }
 
+        public object OverrideValue { get; set; }
+
         protected void SetKey()
         {
             Blackboard?.RegisterKey(key);
@@ -57,7 +60,22 @@ namespace AI.BT
 
         public bool TryGetValue(out T value)
         {
-            return Blackboard.TryGetValue(Key, out value);
+            value = default;
+            try
+            {
+                value = (T) OverrideValue;
+            }
+            catch (Exception e)
+            {
+                //TODO handle all supported types
+                if (typeof(T) == typeof(float))
+                {
+                    Single.TryParse(OverrideValue as string, out var result);
+                    value = (T) (object) result;
+                }
+            }
+
+            return value != null || Blackboard.TryGetValue(Key, out value);
         }
 
 
@@ -68,7 +86,7 @@ namespace AI.BT
 
         public bool IsSet()
         {
-            return Blackboard.IsSet(Key);
+            return OverrideValue != null || Blackboard.IsSet(Key);
         }
     }
 }

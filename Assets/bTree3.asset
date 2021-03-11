@@ -15,10 +15,10 @@ MonoBehaviour:
   serializedBehaviorTree:
     rootNode:
       type: AI.BT.Nodes.RootNode
-      guid: 1088bf00-e0d3-4432-8d40-b244b7a5ddef
+      guid: fc62a608-d011-49a8-b8cf-b6f8f9d2fdd1
       parent: 
       children:
-      - 09c8dc62-43dd-444c-8596-5205cd944427
+      - 1f4a17dc-b942-4fb5-8a7d-132d40343f55
       graphRect:
         serializedVersion: 2
         x: 1490
@@ -28,10 +28,10 @@ MonoBehaviour:
       propertyKeyMap: []
     nodes:
     - type: AI.BT.Nodes.RootNode
-      guid: 1088bf00-e0d3-4432-8d40-b244b7a5ddef
+      guid: fc62a608-d011-49a8-b8cf-b6f8f9d2fdd1
       parent: 
       children:
-      - 09c8dc62-43dd-444c-8596-5205cd944427
+      - 1f4a17dc-b942-4fb5-8a7d-132d40343f55
       graphRect:
         serializedVersion: 2
         x: 1490
@@ -40,14 +40,14 @@ MonoBehaviour:
         height: 77
       propertyKeyMap: []
     - type: AI.BT.SelectRandomTransformNode
-      guid: d7e78d7b-ac44-428a-849e-4cb93a758649
-      parent: d12ffc11-2d6d-437d-b22d-0a62b8050cfd
+      guid: b2e596c3-efd5-4f8a-a157-dbf33fa5c30b
+      parent: 84c6867f-0478-4387-aed5-f7d0af96afe5
       children: []
       graphRect:
         serializedVersion: 2
         x: 344
         y: 441
-        width: 279
+        width: 295
         height: 101
       propertyKeyMap:
       - propertyName: array
@@ -55,80 +55,80 @@ MonoBehaviour:
       - propertyName: selection
         key: target
     - type: AI.BT.Nodes.MoveTo
-      guid: f10e4bcf-c983-4d7d-a8ed-839d45279b49
-      parent: 22ec8461-4522-4806-937c-bb5ee315cb96
-      children: []
-      graphRect:
-        serializedVersion: 2
-        x: 422
-        y: 241
-        width: 195
-        height: 101
-      propertyKeyMap:
-      - propertyName: Target
-        key: player
-    - type: AI.BT.Nodes.MoveTo
-      guid: cbeaca0f-4423-4fd3-ae2f-e07433622ed7
-      parent: d12ffc11-2d6d-437d-b22d-0a62b8050cfd
+      guid: 12ca1c1a-c2b3-42b7-b13b-33114630fcc0
+      parent: 84c6867f-0478-4387-aed5-f7d0af96afe5
       children: []
       graphRect:
         serializedVersion: 2
         x: 423
         y: 604
-        width: 186
+        width: 194
         height: 101
       propertyKeyMap:
       - propertyName: Target
         key: target
     - type: AI.BT.Nodes.Composite.SelectorNode
-      guid: 09c8dc62-43dd-444c-8596-5205cd944427
-      parent: 1088bf00-e0d3-4432-8d40-b244b7a5ddef
+      guid: 1f4a17dc-b942-4fb5-8a7d-132d40343f55
+      parent: fc62a608-d011-49a8-b8cf-b6f8f9d2fdd1
       children:
-      - d12ffc11-2d6d-437d-b22d-0a62b8050cfd
-      - 22ec8461-4522-4806-937c-bb5ee315cb96
+      - b309aca8-d6a0-454f-b4d4-a5a84c49ae53
+      - 84c6867f-0478-4387-aed5-f7d0af96afe5
       graphRect:
         serializedVersion: 2
         x: 1195
         y: 448
-        width: 124
+        width: 135
         height: 77
       propertyKeyMap: []
     - type: AI.BT.Nodes.Composite.SequenceNode
-      guid: d12ffc11-2d6d-437d-b22d-0a62b8050cfd
-      parent: 09c8dc62-43dd-444c-8596-5205cd944427
+      guid: b309aca8-d6a0-454f-b4d4-a5a84c49ae53
+      parent: 1f4a17dc-b942-4fb5-8a7d-132d40343f55
       children:
-      - d7e78d7b-ac44-428a-849e-4cb93a758649
-      - cbeaca0f-4423-4fd3-ae2f-e07433622ed7
-      graphRect:
-        serializedVersion: 2
-        x: 872
-        y: 548
-        width: 134
-        height: 77
-      propertyKeyMap: []
-    - type: AI.BT.Nodes.Composite.SequenceNode
-      guid: 22ec8461-4522-4806-937c-bb5ee315cb96
-      parent: 09c8dc62-43dd-444c-8596-5205cd944427
-      children:
-      - e3572526-1341-45ad-931d-7e0f110769da
-      - f10e4bcf-c983-4d7d-a8ed-839d45279b49
+      - a39b1bf7-e4fa-4f70-9e2b-c53fcf50230d
+      - 052d8ab5-2439-48b5-84ac-95e7edc1ec8b
       graphRect:
         serializedVersion: 2
         x: 874
         y: 339
-        width: 134
+        width: 145
         height: 77
       propertyKeyMap: []
     - type: AI.BT.Nodes.IsSetNode
-      guid: e3572526-1341-45ad-931d-7e0f110769da
-      parent: 22ec8461-4522-4806-937c-bb5ee315cb96
+      guid: a39b1bf7-e4fa-4f70-9e2b-c53fcf50230d
+      parent: b309aca8-d6a0-454f-b4d4-a5a84c49ae53
       children: []
       graphRect:
         serializedVersion: 2
         x: 392
         y: 117
-        width: 226
+        width: 239
         height: 101
       propertyKeyMap:
       - propertyName: keyToCheck
-        key: player
+        key: player1
+    - type: AI.BT.Nodes.MoveTo
+      guid: 052d8ab5-2439-48b5-84ac-95e7edc1ec8b
+      parent: b309aca8-d6a0-454f-b4d4-a5a84c49ae53
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 418
+        y: 247
+        width: 208
+        height: 101
+      propertyKeyMap:
+      - propertyName: Target
+        key: player1
+    - type: AI.BT.Nodes.Composite.SequenceNode
+      guid: 84c6867f-0478-4387-aed5-f7d0af96afe5
+      parent: 1f4a17dc-b942-4fb5-8a7d-132d40343f55
+      children:
+      - b2e596c3-efd5-4f8a-a157-dbf33fa5c30b
+      - 12ca1c1a-c2b3-42b7-b13b-33114630fcc0
+      graphRect:
+        serializedVersion: 2
+        x: 871
+        y: 559
+        width: 143
+        height: 77
+      propertyKeyMap: []

@@ -27,6 +27,7 @@ namespace AI.BT
                 if (btNode.GetOrCreateBlackboardAccessor(fieldInfo) is BlackboardAccessor accessor)
                 {
                     accessor.Key = propertyKeyPair.key;
+                    accessor.OverrideValue = propertyKeyPair.overrideValue;
                 }
             }
 

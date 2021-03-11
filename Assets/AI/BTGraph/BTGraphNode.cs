@@ -26,15 +26,42 @@ namespace AI.BTGraph
                     new PropertyKeyPair()
                     {
                         propertyName = kvp.Key.portName, //field name matches port name
-                        key = kvp.Value.Label.text //label text matches key
+                        key = kvp.Value.Label.text, //label text matches key
+                        //TODO make sure all supported values are properly passed (as string might return null)
+                        overrideValue =
+                            kvp.Value
+                                    .overrideValue as
+                                string //override value if source is manual input instead of blackboard
                     }
                 ).ToList();
             }
         }
 
         private readonly List<Port> ports = new List<Port>();
+
         private readonly Dictionary<Port, PortBlackboardValue>
             portBlackboardValues = new Dictionary<Port, PortBlackboardValue>();
+
+        private readonly Label indexLabel;
+        private int currentChildIndex;
+
+        public int CurrentChildIndex
+        {
+            get => currentChildIndex;
+            set
+            {
+                if (currentChildIndex != value)
+                {
+                    currentChildIndex = value;
+                    UpdateIndex();
+                }
+            }
+        }
+
+        private void UpdateIndex()
+        {
+            indexLabel.text = currentChildIndex.ToString();
+        }
 
         public BTGraphNode(Type type) : this(new RuntimeNodeData(type))
         {
@@ -63,6 +90,9 @@ namespace AI.BTGraph
 
             CreatePorts(RuntimeNodeData.inputTypes, inputContainer, Direction.Input);
             CreatePorts(RuntimeNodeData.outputTypes, outputContainer, Direction.Output, Port.Capacity.Multi);
+
+            indexLabel = new Label("0");
+            titleContainer.Add(indexLabel);
 
             RefreshPorts();
             RefreshExpandedState();
@@ -108,10 +138,10 @@ namespace AI.BTGraph
                 port.portName = kvp.Key;
                 port.name = port.portName;
                 port.style.justifyContent = Justify.SpaceBetween;
-                var element = new PortBlackboardValue();
-                port.contentContainer.Add(element);
+                var portBlackboardValue = new PortBlackboardValue(kvp.Value.allowsManualInput, kvp.Value.overrideValue);
+                port.contentContainer.Add(portBlackboardValue);
 
-                portBlackboardValues[port] = element;
+                portBlackboardValues[port] = portBlackboardValue;
 
                 ports.Add(port);
                 visualElement.Add(port);

@@ -54,6 +54,7 @@ namespace AI.BTGraph
             foreach (var node in nodes)
             {
                 graphView.AddElement(node);
+                graphView.UpdateChildIndex(node);
                 node.RefreshPorts();
                 node.RefreshExpandedState();
             }
@@ -177,7 +178,7 @@ namespace AI.BTGraph
             {
                 AssetDatabase.CreateAsset(behaviorTree, "Assets/bTree.asset");
             }
-            
+
             EditorUtility.SetDirty(behaviorTree);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

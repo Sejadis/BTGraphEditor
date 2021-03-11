@@ -6,27 +6,30 @@ namespace AI.BT.Nodes
     [Serializable]
     public class WaitNode : BTNode
     {
-        [Input] public float waitTime = 3;
-        [Output] public int transform;
-        [Input] public BlackboardAccessor<float> WaitTime = new BlackboardAccessor<float>("waitTime");
+        [Input,Option] public BlackboardAccessor<float> WaitTime;
         private DateTime startTime = DateTime.MinValue;
 
         public WaitNode()
         {
         }
-
-        public WaitNode(float waitTime)
-        {
-            if (waitTime == 0)
-            {
-                throw new ArgumentException("waitTime can not be 0");
-            }
-
-            this.waitTime = waitTime;
-        }
+        //
+        // public WaitNode(float waitTime)
+        // {
+        //     if (waitTime == 0)
+        //     {
+        //         throw new ArgumentException("waitTime can not be 0");
+        //     }
+        //
+        //     this.waitTime = waitTime;
+        // }
 
         public override ResultState Execute()
         {
+            if (!WaitTime.IsSet())
+            {
+                //TODO decide on proper handling
+                return CurrentState = ResultState.Failure;
+            }
             CurrentState = ResultState.Running;
             if (startTime == DateTime.MinValue)
             {
@@ -36,7 +39,8 @@ namespace AI.BT.Nodes
             float seconds;
             if (!WaitTime.TryGetValue(out seconds))
             {
-                seconds = waitTime;
+                //TODO necessary?
+                seconds = 0f;
             }
             if (DateTime.Now - startTime > TimeSpan.FromSeconds((double) seconds))
             {

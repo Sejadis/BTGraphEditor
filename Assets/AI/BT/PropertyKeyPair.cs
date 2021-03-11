@@ -9,5 +9,6 @@ namespace AI.BT
     {
         public string propertyName;
         public string key;
+        public string overrideValue;
     }
 }

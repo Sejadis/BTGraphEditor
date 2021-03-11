@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -26,6 +28,57 @@ namespace AI.BTGraph.Editor
             var node = CreateRootNode();
             RootNode = node;
             AddElement(node);
+
+            graphViewChanged = OnGraphViewChanged;
+        }
+
+        private GraphViewChange OnGraphViewChanged(GraphViewChange graphviewChange)
+        {
+            //TODO store new edges in nodes as children/parent to prevent the need to go through all edges all the time
+            if (graphviewChange.edgesToCreate != null)
+            {
+                foreach (var edge in graphviewChange.edgesToCreate)
+                {
+                    if (edge.input.node is BTGraphNode inputNode && edge.output.node is BTGraphNode outputNode)
+                    {
+                        UpdateChildIndex(inputNode, true, outputNode);
+                    }
+                }
+            }
+
+            if (graphviewChange.movedElements == null) return graphviewChange;
+            foreach (var movedElement in graphviewChange.movedElements)
+            {
+                if (movedElement is BTGraphNode graphNode)
+                {
+                    UpdateChildIndex(graphNode);
+                }
+            }
+
+            return graphviewChange;
+        }
+
+        //TODO try to get a callback after edge creation so we can remove the new edge
+        public void UpdateChildIndex(BTGraphNode graphNode, bool asParent = false, BTGraphNode newNode = null)
+        {
+            var nodeParent = asParent
+                ? graphNode
+                : edges.ToList().FirstOrDefault(edge => edge?.output == graphNode.OutputPort)?.input
+                    .node as BTGraphNode;
+            if (nodeParent == null) return;
+
+            var children = edges.ToList().Where(edge => edge.input == nodeParent.InputPort)
+                .Select(edge => edge.output.node as BTGraphNode).ToList();
+            if (newNode != null)
+            {
+                children.Add(newNode);
+            }
+
+            children = children.OrderBy(child => child.GetPosition().position.y).ToList();
+            for (var i = 0; i < children.Count; i++)
+            {
+                children[i].CurrentChildIndex = i;
+            }
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)

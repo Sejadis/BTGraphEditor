@@ -36,14 +36,19 @@ namespace AI.BTGraph
             var fields = type.GetFields();
             foreach (var field in fields)
             {
-                if (field.GetCustomAttribute(typeof(InputAttribute)) != null)
+                var isInput = field.GetCustomAttribute(typeof(InputAttribute)) != null;
+                var isOutput = field.GetCustomAttribute(typeof(OutputAttribute)) != null;
+                var allowsManualInput = field.GetCustomAttribute(typeof(OptionAttribute)) != null;
+
+                var ktp = new KeyTypePair("", field.FieldType, allowsManualInput);
+                if (isInput)
                 {
-                    inputTypes[field.Name] = new KeyTypePair("", field.FieldType);
+                    inputTypes[field.Name] = ktp;
                 }
 
-                if (field.GetCustomAttribute(typeof(OutputAttribute)) != null)
+                if (isOutput)
                 {
-                    outputTypes[field.Name] = new KeyTypePair("", field.FieldType);
+                    outputTypes[field.Name] = ktp;
                 }
             }
 
@@ -61,6 +66,7 @@ namespace AI.BTGraph
                     if (node.GetOrCreateBlackboardAccessor(field) is BlackboardAccessor accessor)
                     {
                         ktp.key = accessor.Key;
+                        ktp.overrideValue = accessor.OverrideValue as string;
                     }
                 }
             }

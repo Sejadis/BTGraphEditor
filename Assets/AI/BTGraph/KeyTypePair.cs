@@ -6,12 +6,16 @@ namespace AI.BTGraph
     {
         public string key;
         public Type type;
+        public bool allowsManualInput;
+        public string overrideValue;
 
-        public KeyTypePair(string key, Type type)
+        public KeyTypePair(string key, Type type, bool allowsManualInput)
         {
+            this.allowsManualInput = allowsManualInput;
             this.key = key;
             this.type = type;
         }
+
         public string typeString => type.Name;
     }
 }

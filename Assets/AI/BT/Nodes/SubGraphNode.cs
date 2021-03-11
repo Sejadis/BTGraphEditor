@@ -4,7 +4,7 @@ namespace AI.BT.Nodes
 {
     public class SubGraphNode : BTNode, IHasNoChildren
     {
-        [ManualInput]
+        [Option]
         public BehaviorTree subGraph;
         public override ResultState Execute()
         {
