@@ -86,7 +86,9 @@ namespace AI.BT
 
         public bool IsSet()
         {
-            return OverrideValue != null || Blackboard.IsSet(Key);
+            //TODO
+            //OverrideValue != null
+            return !string.IsNullOrEmpty(OverrideValue as string) || Blackboard.IsSet(Key);
         }
     }
 }
