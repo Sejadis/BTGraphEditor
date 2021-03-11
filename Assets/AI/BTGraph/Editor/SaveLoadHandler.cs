@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using AI.BT;
 using AI.BT.Nodes;
 using AI.BT.Serialization;
@@ -71,7 +70,7 @@ namespace AI.BTGraph
                     var key = (node.GetOrCreateBlackboardAccessor(fieldInfo) as BlackboardAccessor)?.Key;
                     var type = fieldInfo.FieldType.GetGenericArguments()[0];
                     //TODO replace <none> with something not magic stringy
-                    if (!string.IsNullOrEmpty(key) && !key.Equals("none"))
+                    if (!string.IsNullOrEmpty(key) && !key.Equals("none") && !type.Name.Equals("Object"))
                     {
                         result.Add((type, key));
                     }
