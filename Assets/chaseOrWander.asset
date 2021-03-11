@@ -1,0 +1,166 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc62655510744c47bbf906d448fe6df9, type: 3}
+  m_Name: chaseOrWander
+  m_EditorClassIdentifier: 
+  serializedBehaviorTree:
+    rootNode:
+      type: AI.BT.Nodes.RootNode
+      guid: 7703b724-6797-462e-90d5-b00881a249e8
+      parent: 
+      children:
+      - a2384c3f-b04e-4ba0-b182-11614c8c1d60
+      graphRect:
+        serializedVersion: 2
+        x: 1490
+        y: 462
+        width: 81
+        height: 77
+      propertyKeyMap: []
+    nodes:
+    - type: AI.BT.Nodes.RootNode
+      guid: 7703b724-6797-462e-90d5-b00881a249e8
+      parent: 
+      children:
+      - a2384c3f-b04e-4ba0-b182-11614c8c1d60
+      graphRect:
+        serializedVersion: 2
+        x: 1490
+        y: 462
+        width: 81
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.Composite.ActiveSelectorNode
+      guid: a2384c3f-b04e-4ba0-b182-11614c8c1d60
+      parent: 7703b724-6797-462e-90d5-b00881a249e8
+      children:
+      - e50cc950-0933-4440-b2d8-0ccf3768141e
+      - b5e539f3-b96f-4f95-b8d3-cea08c742ef9
+      graphRect:
+        serializedVersion: 2
+        x: 1224
+        y: 500
+        width: 171
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.SelectRandomTransformNode
+      guid: ee485304-115e-465c-b3b6-12480081e52c
+      parent: b5e539f3-b96f-4f95-b8d3-cea08c742ef9
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 657
+        y: 658
+        width: 295
+        height: 101
+      propertyKeyMap:
+      - propertyName: array
+        key: waypoints
+        overrideValue: 
+      - propertyName: selection
+        key: target
+        overrideValue: 
+    - type: AI.BT.Nodes.MoveTo
+      guid: 00f04657-857b-4503-b67b-c5313cb53d45
+      parent: b5e539f3-b96f-4f95-b8d3-cea08c742ef9
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 752
+        y: 786
+        width: 194
+        height: 101
+      propertyKeyMap:
+      - propertyName: Target
+        key: target
+        overrideValue: 
+    - type: AI.BT.Nodes.Composite.SequenceNode
+      guid: b5e539f3-b96f-4f95-b8d3-cea08c742ef9
+      parent: a2384c3f-b04e-4ba0-b182-11614c8c1d60
+      children:
+      - ee485304-115e-465c-b3b6-12480081e52c
+      - 00f04657-857b-4503-b67b-c5313cb53d45
+      graphRect:
+        serializedVersion: 2
+        x: 1010
+        y: 654
+        width: 145
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.MoveTo
+      guid: 12db00c1-71fb-4749-852f-ad0b9cdacb51
+      parent: f179c337-87e2-4b8f-83c8-b41a1db677b8
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 507
+        y: 324
+        width: 195
+        height: 101
+      propertyKeyMap:
+      - propertyName: Target
+        key: player
+        overrideValue: 
+    - type: AI.BT.Nodes.WaitNode
+      guid: de5c4ee9-d36b-4468-8026-0f5d8e2d7f6a
+      parent: f179c337-87e2-4b8f-83c8-b41a1db677b8
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 466
+        y: 468
+        width: 186
+        height: 101
+      propertyKeyMap:
+      - propertyName: WaitTime
+        key: none
+        overrideValue: 5
+    - type: AI.BT.Nodes.IsSetNode
+      guid: 8501dc6f-b48c-4a13-9eba-c42d0a955726
+      parent: e50cc950-0933-4440-b2d8-0ccf3768141e
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 523
+        y: 142
+        width: 226
+        height: 101
+      propertyKeyMap:
+      - propertyName: keyToCheck
+        key: player
+        overrideValue: 
+    - type: AI.BT.Nodes.Composite.SelectorNode
+      guid: f179c337-87e2-4b8f-83c8-b41a1db677b8
+      parent: e50cc950-0933-4440-b2d8-0ccf3768141e
+      children:
+      - 12db00c1-71fb-4749-852f-ad0b9cdacb51
+      - de5c4ee9-d36b-4468-8026-0f5d8e2d7f6a
+      graphRect:
+        serializedVersion: 2
+        x: 787
+        y: 456
+        width: 133
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.Composite.SequenceNode
+      guid: e50cc950-0933-4440-b2d8-0ccf3768141e
+      parent: a2384c3f-b04e-4ba0-b182-11614c8c1d60
+      children:
+      - 8501dc6f-b48c-4a13-9eba-c42d0a955726
+      - f179c337-87e2-4b8f-83c8-b41a1db677b8
+      graphRect:
+        serializedVersion: 2
+        x: 983
+        y: 377
+        width: 143
+        height: 77
+      propertyKeyMap: []
