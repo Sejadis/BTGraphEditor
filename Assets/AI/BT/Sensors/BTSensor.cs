@@ -10,7 +10,7 @@ namespace AI.BT.Sensors
         public BTRunner BlackboardProvider;
         public string Key;
 
-        private void Awake()
+        protected void Start()
         {
             if (BlackboardProvider != null)
             {
@@ -26,7 +26,7 @@ namespace AI.BT.Sensors
         /// Writes a value to the blackboard if not null, otherwise unset the key
         /// </summary>
         /// <param name="value"></param>
-        protected void WriteToBlackBoard(object value)
+        protected void WriteToBlackBoard(object value, Blackboard _blackboard = null)
         {
             if (string.IsNullOrEmpty(Key))
             {
@@ -34,13 +34,14 @@ namespace AI.BT.Sensors
                 return;
             }
 
+            var blackboardToUse = _blackboard != null ? _blackboard : blackboard;
             if (value != null)
             {
-                blackboard?.SetValue(Key, value);
+                blackboardToUse?.SetValue(Key, value);
             }
             else
             {
-                blackboard?.UnSet(Key);
+                blackboardToUse?.UnSet(Key);
             }
         }
     }

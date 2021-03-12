@@ -5,17 +5,20 @@ using AI.BT;
 using AI.BT.Sensors;
 using UnityEngine;
 
-public class BTRunner : MonoBehaviour, IBlackboardProvider
+public class BTRunner : MonoBehaviour, IBlackboardProvider, IBehaviorTreeProvider
 {
+    public Blackboard Blackboard => BehaviorTree.Blackboard;
+    public BehaviorTree BehaviorTree => treeClone;
     public BehaviorTree tree;
-
     public int frequency;
 
     private float nextActivation;
+    private BehaviorTree treeClone;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        treeClone = tree.Clone();
     }
 
     // Update is called once per frame
@@ -23,10 +26,9 @@ public class BTRunner : MonoBehaviour, IBlackboardProvider
     {
         if (nextActivation < Time.time)
         {
-            tree.Run();
-            nextActivation = Time.time + 1f / frequency * 60;
+            treeClone.Run();
+            nextActivation = Time.time + 1f / frequency;
         }
     }
 
-    public Blackboard Blackboard => tree.Blackboard;
 }

@@ -65,7 +65,7 @@ namespace AI.BT
             {
                 value = (T) OverrideValue;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //TODO handle all supported types
                 if (typeof(T) == typeof(float))

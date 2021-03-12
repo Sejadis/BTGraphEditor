@@ -100,5 +100,13 @@ namespace AI.BT
         {
             rootNode.Sort(nodePositions);
         }
+
+        public BehaviorTree Clone()
+        {
+            var clone = CreateInstance<BehaviorTree>();
+            clone.serializedBehaviorTree = new SerializedBehaviorTree(this);
+            clone.OnAfterDeserialize();
+            return clone;
+        }
     }
 }

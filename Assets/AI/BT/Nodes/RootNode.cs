@@ -24,8 +24,7 @@ namespace AI.BT.Nodes
                         break;
                 }
             }
-
-            Debug.Log("RootNode: " + resultState);
+            
             return resultState;
         }
 
