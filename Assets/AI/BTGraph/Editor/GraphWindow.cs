@@ -217,10 +217,6 @@ namespace AI.BTGraph.Editor
                 text = "New"
             };
 
-            var testNodeButton = new ToolbarButton(CreateTestNodes)
-            {
-                text = "Create TestNode"
-            };
 
             var runTreeButton = new ToolbarButton(RunTree)
             {
@@ -237,7 +233,6 @@ namespace AI.BTGraph.Editor
             treePicker.RegisterValueChangedCallback(OnTreeChanged);
             toolbar.Add(saveButton);
             toolbar.Add(newButton);
-            toolbar.Add(testNodeButton);
             toolbar.Add(treePicker);
             toolbar.Add(runTreeButton);
             toolbar.Add(currentAssetLabel);
