@@ -35,7 +35,7 @@ namespace AI.BTGraph.Editor
         private NodeSearchWindow _searchWindow;
         private Label currentAssetLabel;
 
-        public BehaviorTree SelectedBehaviorTree
+        private BehaviorTree SelectedBehaviorTree
         {
             get => selectedBehaviorTree;
             set
@@ -62,6 +62,15 @@ namespace AI.BTGraph.Editor
             window.titleContent = new GUIContent("Behavior Graph");
             window.minSize = new Vector2(800, 600);
             return window;
+        }
+
+        private void SelectionChanged()
+        {
+            var treeProvider = Selection.activeGameObject?.GetComponent<IBehaviorTreeProvider>();
+            if (treeProvider != null && treeProvider.BehaviorTree != null)
+            {
+                SelectedBehaviorTree = treeProvider.BehaviorTree;
+            }
         }
 
         [OnOpenAsset(1)]
@@ -94,11 +103,12 @@ namespace AI.BTGraph.Editor
             {
                 LoadGraph(selectedBehaviorTree);
             }
-            // CreateTestNodes();
+            Selection.selectionChanged += SelectionChanged;
         }
 
         private void OnDisable()
         {
+            Selection.selectionChanged -= SelectionChanged;
             rootVisualElement.Remove(graphView);
         }
 
