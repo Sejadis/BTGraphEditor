@@ -4,7 +4,7 @@ using UnityEngine;
 namespace AI.BT.Nodes
 {
     [Serializable]
-    public class LogNode :BTNode
+    public class LogNode :LeafNode
     {
         public override ResultState Execute()
         {

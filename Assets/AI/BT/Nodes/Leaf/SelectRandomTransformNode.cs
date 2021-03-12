@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AI.BT
 {
-    public class SelectRandomTransformNode :BTNode
+    public class SelectRandomTransformNode :LeafNode
     {
         [Input] public BlackboardAccessor<Transform[]> array;
         [Output] public BlackboardAccessor<Transform> selection;

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace AI.BT.Nodes
 {
-    public class MoveTo : BTNode
+    public class MoveTo : LeafNode
     {
         [Input] public BlackboardAccessor<NavMeshAgent> Agent;
 

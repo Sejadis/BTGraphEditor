@@ -2,7 +2,7 @@
 
 namespace AI.BT.Nodes
 {
-    public class SubGraphNode : BTNode, IHasNoChildren
+    public class SubGraphNode : LeafNode
     {
         [Option]
         public BehaviorTree subGraph;

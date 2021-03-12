@@ -73,7 +73,7 @@ namespace AI.BTGraph
             RuntimeNodeData = runtimeNodeData;
             Guid = Guid.NewGuid();
             title = RuntimeNodeData.type.Name;
-            OutputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi,
+            OutputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single,
                 typeof(ResultState));
             OutputPort.portName = "OUT";
             ports.Add(OutputPort);

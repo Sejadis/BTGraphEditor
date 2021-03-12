@@ -53,7 +53,7 @@ namespace AI.BTGraph
             }
 
             allowMultipleChildren = type.GetInterfaces().Contains(typeof(IMayHaveMultipleChildren));
-            hasNoChildren = type.GetInterfaces().Contains(typeof(IHasNoChildren));
+            hasNoChildren = type.IsSubclassOf(typeof(LeafNode));
         }
 
         public RuntimeNodeData(BTNode node) : this(node.GetType())

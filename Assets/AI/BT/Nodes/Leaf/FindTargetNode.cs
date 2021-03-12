@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AI.BT.Nodes
 {
-    public class FindTargetNode : BTNode
+    public class FindTargetNode : LeafNode
     {
         [Input] public BlackboardAccessor<Transform[]> Targets;
         [Output] public BlackboardAccessor<Transform> Target;

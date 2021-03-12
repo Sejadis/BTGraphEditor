@@ -4,7 +4,7 @@ using AI.BTGraph.Attribute;
 namespace AI.BT.Nodes
 {
     [Serializable]
-    public class WaitNode : BTNode
+    public class WaitNode : LeafNode
     {
         [Input,Option] public BlackboardAccessor<float> WaitTime;
         private DateTime startTime = DateTime.MinValue;

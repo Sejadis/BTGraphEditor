@@ -2,7 +2,7 @@ using AI.BTGraph.Attribute;
 
 namespace AI.BT.Nodes
 {
-    public class IsSetNode : BTNode
+    public class IsSetNode : LeafNode
     {
         [Input] public BlackboardAccessor<object> keyToCheck;
 

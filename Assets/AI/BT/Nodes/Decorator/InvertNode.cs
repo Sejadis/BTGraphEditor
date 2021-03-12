@@ -8,13 +8,13 @@ namespace AI.BT.Nodes.Decorator
     {
         public override ResultState Execute()
         {
-            if (children.Count != 1)
+            if (child == null)
             {
-                Debug.LogWarning($"InvertNode has {children.Count} nodes. Should have 1");
-                return ResultState.Failure;
+                //TODO or success?
+                return CurrentState = ResultState.Failure;
             }
 
-            var resultState = children[0].Execute();
+            var resultState = child.Execute();
             switch (resultState)
             {
                 case ResultState.Running:

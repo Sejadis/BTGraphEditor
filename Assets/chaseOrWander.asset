@@ -15,10 +15,10 @@ MonoBehaviour:
   serializedBehaviorTree:
     rootNode:
       type: AI.BT.Nodes.RootNode
-      guid: 994536e7-b1ce-4f47-ac06-394a2e6b960e
+      guid: c3917673-3665-4c90-be21-7364b7eee34d
       parent: 
       children:
-      - c32021ba-eba5-43cc-99ef-4bae44a79c48
+      - 4f1890b4-5091-41d6-acb0-863ad034b8bb
       graphRect:
         serializedVersion: 2
         x: 1490
@@ -28,10 +28,10 @@ MonoBehaviour:
       propertyKeyMap: []
     nodes:
     - type: AI.BT.Nodes.RootNode
-      guid: 994536e7-b1ce-4f47-ac06-394a2e6b960e
+      guid: c3917673-3665-4c90-be21-7364b7eee34d
       parent: 
       children:
-      - c32021ba-eba5-43cc-99ef-4bae44a79c48
+      - 4f1890b4-5091-41d6-acb0-863ad034b8bb
       graphRect:
         serializedVersion: 2
         x: 1490
@@ -40,11 +40,11 @@ MonoBehaviour:
         height: 77
       propertyKeyMap: []
     - type: AI.BT.Nodes.Composite.ActiveSelectorNode
-      guid: c32021ba-eba5-43cc-99ef-4bae44a79c48
-      parent: 994536e7-b1ce-4f47-ac06-394a2e6b960e
+      guid: 4f1890b4-5091-41d6-acb0-863ad034b8bb
+      parent: c3917673-3665-4c90-be21-7364b7eee34d
       children:
-      - 08998d72-05d2-4698-9ec6-b5779ec4201b
-      - 09e9dfe6-d411-493e-ab32-45af0aa98e39
+      - f81f63cd-6d02-4140-96cb-7cbce89def9e
+      - 54892184-5b8d-48d5-b02a-04b015b72964
       graphRect:
         serializedVersion: 2
         x: 1224
@@ -53,8 +53,8 @@ MonoBehaviour:
         height: 77
       propertyKeyMap: []
     - type: AI.BT.SelectRandomTransformNode
-      guid: 4f4a6e33-2330-4e7e-85cb-11a9a565aab0
-      parent: 09e9dfe6-d411-493e-ab32-45af0aa98e39
+      guid: b2c38016-3a41-4a58-adbb-e39dd19688e3
+      parent: 54892184-5b8d-48d5-b02a-04b015b72964
       children: []
       graphRect:
         serializedVersion: 2
@@ -70,8 +70,8 @@ MonoBehaviour:
         key: target
         overrideValue: 
     - type: AI.BT.Nodes.MoveTo
-      guid: ef680678-4108-481a-b90b-0062fdd2b5b9
-      parent: 09e9dfe6-d411-493e-ab32-45af0aa98e39
+      guid: aa880e32-731a-441b-b745-e60f49cdc96e
+      parent: 54892184-5b8d-48d5-b02a-04b015b72964
       children: []
       graphRect:
         serializedVersion: 2
@@ -87,11 +87,11 @@ MonoBehaviour:
         key: target
         overrideValue: 
     - type: AI.BT.Nodes.Composite.SequenceNode
-      guid: 09e9dfe6-d411-493e-ab32-45af0aa98e39
-      parent: c32021ba-eba5-43cc-99ef-4bae44a79c48
+      guid: 54892184-5b8d-48d5-b02a-04b015b72964
+      parent: 4f1890b4-5091-41d6-acb0-863ad034b8bb
       children:
-      - 4f4a6e33-2330-4e7e-85cb-11a9a565aab0
-      - ef680678-4108-481a-b90b-0062fdd2b5b9
+      - b2c38016-3a41-4a58-adbb-e39dd19688e3
+      - aa880e32-731a-441b-b745-e60f49cdc96e
       graphRect:
         serializedVersion: 2
         x: 1010
@@ -100,8 +100,8 @@ MonoBehaviour:
         height: 77
       propertyKeyMap: []
     - type: AI.BT.Nodes.MoveTo
-      guid: db621a39-3de0-4b1e-8ad7-9024d3427185
-      parent: e77756b5-77c4-4a77-8f64-b63175c4a23a
+      guid: 923ecd6b-641c-4501-b840-88735fa4ac38
+      parent: 17d27f2f-a474-4115-9490-dc03c8601b23
       children: []
       graphRect:
         serializedVersion: 2
@@ -117,8 +117,8 @@ MonoBehaviour:
         key: player
         overrideValue: 
     - type: AI.BT.Nodes.WaitNode
-      guid: 0c1481bf-7a38-44df-ad07-fb522ff6a81b
-      parent: e77756b5-77c4-4a77-8f64-b63175c4a23a
+      guid: bca4abb9-07c3-4ac1-b428-f012ed256da4
+      parent: 17d27f2f-a474-4115-9490-dc03c8601b23
       children: []
       graphRect:
         serializedVersion: 2
@@ -131,8 +131,8 @@ MonoBehaviour:
         key: none
         overrideValue: 5
     - type: AI.BT.Nodes.IsSetNode
-      guid: aa48ab36-c25e-4eb9-b1ce-13e6d33a8add
-      parent: 08998d72-05d2-4698-9ec6-b5779ec4201b
+      guid: 97f3607f-176b-468b-8f0e-9a0d84128ded
+      parent: f81f63cd-6d02-4140-96cb-7cbce89def9e
       children: []
       graphRect:
         serializedVersion: 2
@@ -145,11 +145,11 @@ MonoBehaviour:
         key: player
         overrideValue: 
     - type: AI.BT.Nodes.Composite.SequenceNode
-      guid: 08998d72-05d2-4698-9ec6-b5779ec4201b
-      parent: c32021ba-eba5-43cc-99ef-4bae44a79c48
+      guid: f81f63cd-6d02-4140-96cb-7cbce89def9e
+      parent: 4f1890b4-5091-41d6-acb0-863ad034b8bb
       children:
-      - aa48ab36-c25e-4eb9-b1ce-13e6d33a8add
-      - e77756b5-77c4-4a77-8f64-b63175c4a23a
+      - 97f3607f-176b-468b-8f0e-9a0d84128ded
+      - 17d27f2f-a474-4115-9490-dc03c8601b23
       graphRect:
         serializedVersion: 2
         x: 983
@@ -158,11 +158,11 @@ MonoBehaviour:
         height: 77
       propertyKeyMap: []
     - type: AI.BT.Nodes.Composite.ActiveSelectorNode
-      guid: e77756b5-77c4-4a77-8f64-b63175c4a23a
-      parent: 08998d72-05d2-4698-9ec6-b5779ec4201b
+      guid: 17d27f2f-a474-4115-9490-dc03c8601b23
+      parent: f81f63cd-6d02-4140-96cb-7cbce89def9e
       children:
-      - db621a39-3de0-4b1e-8ad7-9024d3427185
-      - 0c1481bf-7a38-44df-ad07-fb522ff6a81b
+      - 923ecd6b-641c-4501-b840-88735fa4ac38
+      - bca4abb9-07c3-4ac1-b428-f012ed256da4
       graphRect:
         serializedVersion: 2
         x: 756

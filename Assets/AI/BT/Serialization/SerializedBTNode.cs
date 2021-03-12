@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AI.BT.Nodes;
+using AI.BT.Nodes.Composite;
+using AI.BT.Nodes.Decorator;
 using AI.BTGraph;
 using UnityEngine;
 
@@ -23,11 +25,23 @@ namespace AI.BT.Serialization
             type = node.GetType().ToString();
             parent = node.Parent?.Guid.ToString() ?? String.Empty;
             children = new List<string>();
-            foreach (var child in node.Children)
+            switch (node)
             {
-                children.Add(child.Guid.ToString());
+                case CompositeNode compositeNode:
+                {
+                    foreach (var child in compositeNode.Children)
+                    {
+                        children.Add(child.Guid.ToString());
+                    }
+                    break;
+                }
+                case DecoratorNode {child: { }} decoratorNode:
+                {
+                    children.Add(decoratorNode.child.Guid.ToString());
+                    break;
+                }
             }
-
+            
             propertyKeyMap = new List<PropertyKeyPair>();
             var accessorFieldInfos = node.GetBlackboardAccessorFieldInfos();
             foreach (var fieldInfo in accessorFieldInfos)
@@ -44,6 +58,7 @@ namespace AI.BT.Serialization
                 {
                     Debug.LogWarning($"Cant access BlackboardAccessor {fieldInfo.Name} on {type}");
                 }
+
                 propertyKeyMap.Add(pkp);
             }
         }

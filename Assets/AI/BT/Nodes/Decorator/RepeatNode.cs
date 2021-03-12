@@ -23,7 +23,7 @@ namespace AI.BT.Nodes.Decorator
 
             for (var i = 0; i < limit; i++)
             {
-                var state = children[0].Execute();
+                var state = child.Execute();
                 if (state == ResultState.Success)
                 {
                     continue;

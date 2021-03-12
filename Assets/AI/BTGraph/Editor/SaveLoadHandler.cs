@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using AI.BT;
 using AI.BT.Nodes;
+using AI.BT.Nodes.Composite;
+using AI.BT.Nodes.Decorator;
 using AI.BT.Serialization;
 using AI.BTGraph.Editor;
 using UnityEditor;
@@ -166,9 +168,23 @@ namespace AI.BTGraph
             {
                 var child = nodeMap[edge.output.node as BTGraphNode];
                 var parent = nodeMap[edge.input.node as BTGraphNode];
-
+                switch (parent)
+                {
+                    case CompositeNode compositeNode:
+                    {
+                        compositeNode.AddChild(child);
+                        break;
+                    }
+                    case DecoratorNode decoratorNode:
+                    {
+                        decoratorNode.child = child;
+                        break;
+                    }
+                    default:
+                        throw new InvalidOperationException(
+                            "Trying to add a child to a node that cant contain children");
+                }
                 child.SetParent(parent);
-                parent.AddChild(child);
             }
 
             behaviorTree.SortNodes();

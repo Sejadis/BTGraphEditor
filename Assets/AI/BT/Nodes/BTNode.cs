@@ -10,7 +10,6 @@ namespace AI.BT.Nodes
     public abstract class BTNode
     {
         public BTNode Parent => parent;
-        public List<BTNode> Children => children;
         public static bool AllowMultipleChildren => false;
 
         public delegate void StateChanged(ResultState newState, BTNode source);
@@ -20,7 +19,6 @@ namespace AI.BT.Nodes
         public Guid Guid => guid;
 
         protected BTNode parent;
-        protected List<BTNode> children;
 
         private Guid guid;
         private bool isInitialized = false;
@@ -29,7 +27,6 @@ namespace AI.BT.Nodes
         {
             //TODO ? grab all accessors and store in list ?
             guid = Guid.NewGuid();
-            children = new List<BTNode>();
         }
 
         //TODO ? reflection methods as extension methods?
@@ -90,21 +87,6 @@ namespace AI.BT.Nodes
         }
 
         #endregion
-
-        public void Sort(Dictionary<Guid, Rect> nodePositions)
-        {
-            if (children.Count == 0)
-            {
-                return;
-            }
-
-            foreach (var child in children)
-            {
-                child.Sort(nodePositions);
-            }
-
-            children = children.OrderBy(child => nodePositions[child.guid].position.y).ToList();
-        }
 
         public void Initialize(Blackboard blackboard, List<PropertyKeyPair> blackboardConnections)
         {
@@ -176,26 +158,14 @@ namespace AI.BT.Nodes
 
         public abstract ResultState Execute();
 
-        public virtual void AddChild(BTNode child)
-        {
-            if (children == null)
-            {
-                children = new List<BTNode>();
-            }
-
-            if (children.Count < 1 || this is IMayHaveMultipleChildren)
-            {
-                children.Add(child);
-            }
-            else
-            {
-                throw new InvalidOperationException("RootNode can not have more than 1 children");
-            }
-        }
-
         public virtual void SetParent(BTNode parent)
         {
             this.parent = parent;
+        }
+
+        public virtual void Sort(Dictionary<Guid, Rect> nodePositions)
+        {
+            
         }
     }
 }

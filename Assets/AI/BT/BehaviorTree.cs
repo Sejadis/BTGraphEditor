@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AI.BT.Nodes;
+using AI.BT.Nodes.Composite;
 using AI.BT.Serialization;
 using UnityEditor;
 using UnityEngine;
@@ -74,7 +75,10 @@ namespace AI.BT
 
                 foreach (var child in node.children)
                 {
-                    nodeMap[node.guid].AddChild(nodeMap[child]);
+                    if (nodeMap[node.guid] is CompositeNode parent)
+                    {
+                        parent.AddChild(nodeMap[child]);
+                    }
                 }
             }
 
