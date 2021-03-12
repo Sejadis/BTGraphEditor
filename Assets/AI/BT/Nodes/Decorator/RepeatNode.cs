@@ -27,25 +27,6 @@ namespace AI.BT.Nodes.Decorator
             }
 
             return ResultState.Success;
-            if (children.Count != 1)
-            {
-                return CurrentState = ResultState.Failure;
-            }
-
-            if (maxRepeats == -1)
-            {
-                //save the value
-                maxRepeats = limit;
-            }
-
-            children[0].Execute();
-            if (limit == -1 || --limit > 0)
-            {
-                return CurrentState = ResultState.Running;
-            }
-
-            limit = maxRepeats;
-            return CurrentState = ResultState.Success;
         }
     }
 }

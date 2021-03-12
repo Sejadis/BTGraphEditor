@@ -26,13 +26,10 @@ namespace AI.BT.Nodes.Composite
                     case ResultState.Running:
                         currentNode = i;
                         return CurrentState = ResultState.Running;
-                        break;
                     case ResultState.Success:
                         continue;
-                        break;
                     case ResultState.Failure:
                         return CurrentState = ResultState.Failure;
-                        break;
                 }
             }
 
