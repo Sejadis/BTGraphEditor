@@ -323,11 +323,11 @@ namespace AI.BTGraph.Editor
                 }
             }
 
-            dropdown.menu.AppendAction("String", Action, (_) => DropdownMenuAction.Status.Normal, field);
-            dropdown.menu.AppendAction("Float", Action, (_) => DropdownMenuAction.Status.Normal, field);
-            dropdown.menu.AppendAction("Int", Action, (_) => DropdownMenuAction.Status.Normal, field);
-            dropdown.menu.AppendAction("Transform", Action, (_) => DropdownMenuAction.Status.Normal, field);
-            dropdown.menu.AppendAction("Transform[]", Action, (_) => DropdownMenuAction.Status.Normal, field);
+            foreach (var mapKey in TypeMapper.typeMap.Keys)
+            {
+                dropdown.menu.AppendAction(mapKey, Action, (_) => DropdownMenuAction.Status.Normal, field);
+
+            }
 
             field.Add(dropdown);
             blackboardFields[name] = field;
