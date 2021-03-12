@@ -6,22 +6,20 @@ namespace AI.BT.Nodes
 {
     public class MoveTo : BTNode
     {
-        public NavMeshAgent agent;
+        [Input] public BlackboardAccessor<NavMeshAgent> Agent;
+
         [Input] public BlackboardAccessor<Transform> Target;
         private Transform currentTarget;
-        private bool pathSet = false;
 
         public override ResultState Execute()
         {
-            if (agent == null)
+            if (!Agent.IsSet())
             {
-                agent = GameObject.FindObjectOfType<NavMeshAgent>();
-                if (agent == null)
-                {
-                    return CurrentState = ResultState.Failure;
-                }
+                return CurrentState = ResultState.Failure;
             }
 
+            Agent.TryGetValue(out var agent);
+            
             if (!Target.TryGetValue(out var newTarget))
             {
                 return CurrentState = ResultState.Failure;

@@ -14,6 +14,7 @@ namespace AI.BTGraph
             {"Float[]", "System.Single[]"},
             {"String", "System.String"},
             {"String[]", "System.String[]"},
+            {"NavMeshAgent", "UnityEngine.AI.NavMeshAgent, UnityEngine"}
         };
     }
 }
