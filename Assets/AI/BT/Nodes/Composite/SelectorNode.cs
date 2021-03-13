@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine;
 
-namespace AI.BT.Nodes.Composite
+namespace AI.BT.Nodes
 {
     /// <summary>
     /// Will execute all child nodes in order

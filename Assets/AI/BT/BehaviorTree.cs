@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AI.BT.Nodes;
-using AI.BT.Nodes.Composite;
-using AI.BT.Serialization;
-using UnityEditor;
 using UnityEngine;
 
 namespace AI.BT
 {
-    // [CreateAssetMenu(fileName = "Assets/bt", menuName = "Create/BT")]
     public class BehaviorTree : ScriptableObject, ISerializationCallbackReceiver
     {
         public Blackboard Blackboard = new Blackboard();

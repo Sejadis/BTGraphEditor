@@ -15,10 +15,10 @@ MonoBehaviour:
   serializedBehaviorTree:
     rootNode:
       type: AI.BT.Nodes.RootNode
-      guid: 6e0a181d-d61e-4398-b03a-5aac1a4c6daa
+      guid: 27e8fa27-88cd-4abf-a84d-dcce3109d18e
       parent: 
       children:
-      - e024280a-8cc8-4a85-815d-7e080937da53
+      - fdd7bb93-1440-4045-82c3-536501702621
       graphRect:
         serializedVersion: 2
         x: 1490
@@ -28,10 +28,10 @@ MonoBehaviour:
       propertyKeyMap: []
     nodes:
     - type: AI.BT.Nodes.RootNode
-      guid: 6e0a181d-d61e-4398-b03a-5aac1a4c6daa
+      guid: 27e8fa27-88cd-4abf-a84d-dcce3109d18e
       parent: 
       children:
-      - e024280a-8cc8-4a85-815d-7e080937da53
+      - fdd7bb93-1440-4045-82c3-536501702621
       graphRect:
         serializedVersion: 2
         x: 1490
@@ -39,40 +39,65 @@ MonoBehaviour:
         width: 81
         height: 77
       propertyKeyMap: []
-    - type: AI.BT.Nodes.Composite.SelectorNode
-      guid: e024280a-8cc8-4a85-815d-7e080937da53
-      parent: 6e0a181d-d61e-4398-b03a-5aac1a4c6daa
+    - type: AI.BT.Nodes.SequenceNode
+      guid: ed8458cc-db82-4d23-94ae-ec2e7b9a3b95
+      parent: fdd7bb93-1440-4045-82c3-536501702621
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 756
+        y: 553
+        width: 145
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.ActiveSelectorNode
+      guid: bc59abf7-3122-45c6-9829-50d2d39e4e9a
+      parent: fdd7bb93-1440-4045-82c3-536501702621
       children:
-      - b97aab39-2040-43b1-b892-b17242871286
-      - 7bb4ffa5-54c7-4ecc-a4a3-9a6970ba5239
+      - a8b402f0-6464-4477-abab-d24ba3ec4026
+      - 20785cda-fce0-4fbd-8b1d-c94443454317
       graphRect:
         serializedVersion: 2
-        x: 1307
-        y: 460
-        width: 124
-        height: 77
-      propertyKeyMap: []
-    - type: AI.BT.Nodes.Decorator.SuccessNode
-      guid: 7bb4ffa5-54c7-4ecc-a4a3-9a6970ba5239
-      parent: e024280a-8cc8-4a85-815d-7e080937da53
-      children: []
-      graphRect:
-        serializedVersion: 2
-        x: 1089
-        y: 402
-        width: 125
-        height: 77
-      propertyKeyMap: []
-    - type: AI.BT.Nodes.WaitNode
-      guid: b97aab39-2040-43b1-b892-b17242871286
-      parent: e024280a-8cc8-4a85-815d-7e080937da53
-      children: []
-      graphRect:
-        serializedVersion: 2
-        x: 795
+        x: 911
         y: 393
-        width: 287
-        height: 125
+        width: 169
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.SelectorNode
+      guid: fdd7bb93-1440-4045-82c3-536501702621
+      parent: 27e8fa27-88cd-4abf-a84d-dcce3109d18e
+      children:
+      - bc59abf7-3122-45c6-9829-50d2d39e4e9a
+      - ed8458cc-db82-4d23-94ae-ec2e7b9a3b95
+      graphRect:
+        serializedVersion: 2
+        x: 1190
+        y: 445
+        width: 135
+        height: 77
+      propertyKeyMap: []
+    - type: AI.BT.Nodes.RepeatNode
+      guid: a8b402f0-6464-4477-abab-d24ba3ec4026
+      parent: bc59abf7-3122-45c6-9829-50d2d39e4e9a
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 613
+        y: 318
+        width: 196
+        height: 101
       propertyKeyMap:
-      - propertyName: WaitTime
+      - propertyName: Repeats
         key: none
+        overrideValue: 
+    - type: AI.BT.Nodes.InvertNode
+      guid: 20785cda-fce0-4fbd-8b1d-c94443454317
+      parent: bc59abf7-3122-45c6-9829-50d2d39e4e9a
+      children: []
+      graphRect:
+        serializedVersion: 2
+        x: 644
+        y: 438
+        width: 118
+        height: 77
+      propertyKeyMap: []

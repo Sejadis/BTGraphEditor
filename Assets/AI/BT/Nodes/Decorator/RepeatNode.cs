@@ -1,7 +1,7 @@
 ﻿using System;
 using AI.BTGraph.Attribute;
 
-namespace AI.BT.Nodes.Decorator
+namespace AI.BT.Nodes
 {
     [Serializable]
     public class RepeatNode : DecoratorNode

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using AI.BT.Nodes.Composite;
-using AI.BT.Nodes.Decorator;
-using UnityEngine;
 
 namespace AI.BT.Nodes
 {

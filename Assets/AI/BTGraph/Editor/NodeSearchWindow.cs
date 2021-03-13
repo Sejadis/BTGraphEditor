@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using AI;
-using AI.BT;
 using AI.BT.Nodes;
-using AI.BT.Nodes.Composite;
-using AI.BT.Nodes.Decorator;
 using AI.BTGraph;
 using AI.BTGraph.Editor;
-using NUnit.Framework.Internal;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -41,7 +36,7 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
             if (type.IsSubclassOf(typeof(CompositeNode)))
             {
                 searchTree.Add(
-                    new SearchTreeEntry(new GUIContent(type.Name.SplitCamelCase()))
+                    new SearchTreeEntry(new GUIContent(type.Name.SplitCamelCase().Replace("Node", "")))
                     {
                         userData = type,
                         level = 2
@@ -55,15 +50,14 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
             if (type.IsSubclassOf(typeof(DecoratorNode)))
             {
                 searchTree.Add(
-                    new SearchTreeEntry(new GUIContent(type.Name.SplitCamelCase()))
+                    new SearchTreeEntry(new GUIContent(type.Name.SplitCamelCase().Replace("Node", "")))
                     {
                         userData = type,
                         level = 2
                     });
             }
         }
-
-
+        
         //all
         foreach (var type in nodeTypes)
         {
@@ -74,7 +68,7 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
             }
 
             searchTree.Add(
-                new SearchTreeEntry(new GUIContent(type.Name.SplitCamelCase()))
+                new SearchTreeEntry(new GUIContent(type.Name.SplitCamelCase().Replace("Node", "")))
                 {
                     userData = type,
                     level = 1

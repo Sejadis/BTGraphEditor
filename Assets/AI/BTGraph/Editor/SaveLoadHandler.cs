@@ -4,9 +4,6 @@ using System.IO;
 using System.Linq;
 using AI.BT;
 using AI.BT.Nodes;
-using AI.BT.Nodes.Composite;
-using AI.BT.Nodes.Decorator;
-using AI.BT.Serialization;
 using AI.BTGraph.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -204,6 +201,8 @@ namespace AI.BTGraph
         private static void CreateAndMapNodes(IEnumerable<BTGraphNode> graphNodes,
             ref Dictionary<BTGraphNode, BTNode> nodeMap, BehaviorTree behaviorTree)
         {
+            //we are sorting here so when we are loading them they are in proper order to show childindex (cant sort on creation as they dont have a position yet)
+            graphNodes = graphNodes.OrderBy(node => node.GetPosition().position.y);
             foreach (var node in graphNodes)
             {
                 if (!nodeMap.ContainsKey(node))

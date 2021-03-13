@@ -1,7 +1,4 @@
-using System;
-using UnityEngine;
-
-namespace AI.BT.Nodes.Decorator
+namespace AI.BT.Nodes
 {
     public class RunningOrSuccessNode : DecoratorNode
     {

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AI.BT.Nodes;
-using AI.BT.Nodes.Composite;
-using AI.BT.Nodes.Decorator;
-using AI.BTGraph;
 using UnityEngine;
 
-namespace AI.BT.Serialization
+namespace AI.BT
 {
     [Serializable]
     public class SerializedBTNode

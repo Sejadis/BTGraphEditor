@@ -9,20 +9,6 @@ namespace AI.BT.Nodes
         [Input,Option] public BlackboardAccessor<float> WaitTime;
         private DateTime startTime = DateTime.MinValue;
 
-        public WaitNode()
-        {
-        }
-        //
-        // public WaitNode(float waitTime)
-        // {
-        //     if (waitTime == 0)
-        //     {
-        //         throw new ArgumentException("waitTime can not be 0");
-        //     }
-        //
-        //     this.waitTime = waitTime;
-        // }
-
         public override ResultState Execute()
         {
             if (!WaitTime.IsSet())
@@ -48,8 +34,6 @@ namespace AI.BT.Nodes
                 //reset
                 startTime = DateTime.MinValue;
             }
-
-            // Debug.Log("WaitNode: " + CurrentState);
 
             return CurrentState;
         }

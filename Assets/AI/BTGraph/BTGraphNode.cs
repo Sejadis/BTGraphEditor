@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AI.BT;
 using AI.BT.Nodes;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -67,12 +65,12 @@ namespace AI.BTGraph
         {
         }
 
-        public BTGraphNode(RuntimeNodeData runtimeNodeData)
+        private BTGraphNode(RuntimeNodeData runtimeNodeData)
         {
-            name = runtimeNodeData.type.Name;
+            name = runtimeNodeData.type.Name.SplitCamelCase().Replace("Node", "");
             RuntimeNodeData = runtimeNodeData;
             Guid = Guid.NewGuid();
-            title = RuntimeNodeData.type.Name;
+            title = name;
             OutputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single,
                 typeof(ResultState));
             OutputPort.portName = "OUT";
@@ -161,7 +159,7 @@ namespace AI.BTGraph
                 typeof(ResultState));
             InputPort.portName = "IN";
             inputContainer.Add(InputPort);
-
+        
             RefreshPorts();
             RefreshExpandedState();
         }
@@ -188,7 +186,6 @@ namespace AI.BTGraph
                 element.style.backgroundColor = c;
             }
         }
-
 
         public void OnBlackboardValuesChanged(BlackboardField blackboardField)
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AI.BT.Nodes.Decorator
+namespace AI.BT.Nodes
 {
     [Serializable]
     public abstract class DecoratorNode : BTNode

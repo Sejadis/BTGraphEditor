@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AI.BT.Serialization
+namespace AI.BT
 {
     [Serializable]
     public class SerializedBehaviorTree

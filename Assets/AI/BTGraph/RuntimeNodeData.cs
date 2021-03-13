@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using AI.BT;
 using AI.BT.Nodes;
@@ -52,7 +51,7 @@ namespace AI.BTGraph
                 }
             }
 
-            allowMultipleChildren = type.GetInterfaces().Contains(typeof(IMayHaveMultipleChildren));
+            allowMultipleChildren = type.IsSubclassOf(typeof(CompositeNode));
             hasNoChildren = type.IsSubclassOf(typeof(LeafNode));
         }
 

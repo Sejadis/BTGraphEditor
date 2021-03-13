@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AI.BT.Nodes.Composite
+namespace AI.BT.Nodes
 {
     [Serializable]
     public abstract class CompositeNode : BTNode
@@ -24,7 +24,6 @@ namespace AI.BT.Nodes.Composite
                 node.CurrentState = ResultState.Inactive;
             }
         }
-
 
         public override void Sort(Dictionary<Guid, Rect> nodePositions)
         {

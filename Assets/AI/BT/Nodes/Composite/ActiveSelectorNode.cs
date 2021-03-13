@@ -1,6 +1,4 @@
-using System;
-
-namespace AI.BT.Nodes.Composite
+namespace AI.BT.Nodes
 {
     public class ActiveSelectorNode : CompositeNode
     {
